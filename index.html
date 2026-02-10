@@ -4,31 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>PANDU-GI | Pro</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. MODERN COLOR PALETTE (Sesuai Logo) --- */
+        /* --- 1. MODERN COLOR PALETTE --- */
         :root {
-            /* Warna diambil dari Logo */
             --brand-dark: #0f172a;   /* Navy Gelap */
-            --brand-teal: #0d9488;   /* Teal/Hijau Tosca Logo */
-            --brand-gold: #fbbf24;   /* Aksen Gold/Kuning Logo */
+            --brand-teal: #0d9488;   /* Teal/Hijau Tosca */
+            --brand-gold: #fbbf24;   /* Aksen Gold */
             
-            /* Warna UI */
             --bg-body: #f1f5f9;
             --surface: #ffffff;
             --text-main: #1e293b;
             --text-sub: #64748b;
             --border: #e2e8f0;
             
-            /* Shadow Halus */
-            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             
-            /* Status Colors */
             --danger: #ef4444; 
             --success: #10b981;
+            --purple: #8b5cf6;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -39,10 +37,11 @@
             color: var(--text-main);
             margin: 0;
             padding: 0;
-            padding-bottom: 80px;
+            padding-bottom: 80px; /* Space for scroll */
+            overscroll-behavior-y: none; /* Prevent pull-to-refresh on mobile */
         }
 
-        /* --- 2. HEADER DESIGN (Sesuai Request) --- */
+        /* --- 2. HEADER DESIGN --- */
         .top-bar {
             background-color: var(--brand-dark);
             color: white;
@@ -57,7 +56,6 @@
         
         .top-bar-title { font-weight: 700; font-size: 18px; letter-spacing: 0.5px; }
         
-        /* Logo Circle di Kanan Atas */
         .header-logo-circle {
             width: 36px; height: 36px;
             background: white;
@@ -65,34 +63,39 @@
             overflow: hidden;
             display: flex; align-items: center; justify-content: center;
             border: 2px solid var(--brand-gold);
+            font-size: 10px; color: var(--brand-dark); font-weight: bold;
         }
         .header-logo-circle img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Sub-Header Putih */
         .sub-header {
             background: var(--surface);
-            padding: 15px 20px;
+            padding: 12px 20px;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 66px; /* Adjust based on top-bar height */
+            z-index: 99;
         }
         
-        .brand-row { display: flex; align-items: center; gap: 8px; font-weight: 800; color: var(--brand-teal); font-size: 16px; }
+        .brand-row { display: flex; align-items: center; gap: 8px; font-weight: 800; color: var(--brand-teal); font-size: 15px; }
         .unit-badge {
             background: #eff6ff; color: var(--brand-dark);
             font-size: 10px; font-weight: 700;
             padding: 4px 8px; border-radius: 6px;
             border: 1px solid #dbeafe;
             text-transform: uppercase;
+            max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
 
-        .container { max-width: 500px; margin: 0 auto; padding: 20px; min-height: 85vh; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; min-height: 85vh; }
 
-        /* --- 3. DASHBOARD MENU (Sesuai Gambar) --- */
+        /* --- 3. DASHBOARD MENU --- */
         .greeting-area { margin-bottom: 25px; }
-        .greeting-title { font-size: 20px; font-weight: 700; color: var(--text-main); margin: 0; }
+        .greeting-title { font-size: 22px; font-weight: 700; color: var(--text-main); margin: 0; }
         .greeting-sub { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
 
         .menu-grid {
@@ -103,7 +106,7 @@
 
         .menu-card {
             background: var(--surface);
-            border-radius: 20px; /* Rounded besar sesuai gambar */
+            border-radius: 20px;
             padding: 24px 16px;
             display: flex;
             flex-direction: column;
@@ -113,19 +116,21 @@
             border: 1px solid transparent;
             transition: transform 0.15s, border-color 0.15s;
             cursor: pointer;
-            height: 160px; /* Tinggi seragam */
+            min-height: 150px;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
         
-        .menu-card:active { transform: scale(0.97); border-color: var(--brand-teal); }
+        /* Touch feedback */
+        .menu-card:active { transform: scale(0.96); background: #f8fafc; }
 
-        /* Icon dengan Background Halus */
         .icon-box {
-            width: 56px; height: 56px;
-            border-radius: 18px;
+            width: 52px; height: 52px;
+            border-radius: 16px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 26px;
-            margin-bottom: 16px;
+            font-size: 24px;
+            margin-bottom: 14px;
         }
         
         .ic-blue { background: #eff6ff; color: #2563eb; }
@@ -137,49 +142,47 @@
         .menu-name { font-weight: 700; font-size: 14px; color: var(--text-main); line-height: 1.2; }
         .menu-info { font-size: 11px; color: var(--text-sub); margin-top: 4px; }
 
-        /* Menu Lebar (Full Width) */
         .menu-full {
             grid-column: span 2;
             flex-direction: row;
             justify-content: flex-start;
             padding: 20px;
-            height: auto;
+            min-height: auto;
             text-align: left;
             gap: 16px;
         }
-        .menu-full .icon-box { margin-bottom: 0; width: 48px; height: 48px; font-size: 22px; }
+        .menu-full .icon-box { margin-bottom: 0; width: 44px; height: 44px; font-size: 20px; }
 
         /* --- 4. SECTION & FORM STYLES --- */
-        .app-section { display: none; animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .app-section { display: none; animation: fadeIn 0.3s ease; }
         .app-section.active { display: block; }
 
-        /* Card List Data */
         .data-card {
             background: var(--surface);
             border-radius: 16px;
             padding: 16px;
             margin-bottom: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             border: 1px solid var(--border);
             position: relative;
         }
-        .data-title { font-weight: 700; font-size: 15px; color: var(--text-main); margin-bottom: 5px; }
+        .data-title { font-weight: 700; font-size: 15px; color: var(--text-main); margin-bottom: 5px; line-height: 1.4; }
         .data-badge { 
             display: inline-block; padding: 3px 8px; border-radius: 6px; 
             background: #eff6ff; color: var(--brand-teal); 
             font-size: 10px; font-weight: 700; margin-bottom: 8px; 
         }
-        .data-row { margin-top: 8px; }
-        .lbl { font-size: 10px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; }
-        .val { font-size: 13px; color: var(--text-main); white-space: pre-line; }
+        .lbl { font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-top: 10px; display: block; }
+        .val { font-size: 13px; color: var(--text-main); white-space: pre-line; line-height: 1.5; }
 
-        /* Input & Button Modern */
+        /* Inputs */
         input, textarea, select {
-            width: 100%; padding: 14px; border: 1px solid var(--border);
+            width: 100%; padding: 12px 14px; border: 1px solid var(--border);
             border-radius: 12px; font-family: inherit; font-size: 14px;
             background: #fff; margin-bottom: 12px; transition: 0.2s;
+            -webkit-appearance: none; /* Remove iOS styles */
         }
-        input:focus, textarea:focus { border-color: var(--brand-teal); outline: none; }
+        input:focus, textarea:focus { border-color: var(--brand-teal); outline: none; box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1); }
 
         .btn {
             width: 100%; padding: 14px; border: none; border-radius: 12px;
@@ -190,205 +193,225 @@
         .btn:active { transform: scale(0.98); opacity: 0.9; }
         .btn-primary { background: var(--brand-teal); color: white; }
         .btn-secondary { background: white; border: 1px solid var(--border); color: var(--text-main); }
+        .btn-success { background: var(--success); color: white; }
         .btn-danger { background: #fee2e2; color: #ef4444; }
         
         .delete-btn {
-            position: absolute; top: 15px; right: 15px;
+            position: absolute; top: 12px; right: 12px;
             background: #fff1f2; color: #ef4444; border:none;
-            width: 28px; height: 28px; border-radius: 8px;
+            width: 32px; height: 32px; border-radius: 8px;
             display:flex; align-items:center; justify-content:center;
-            cursor: pointer;
+            cursor: pointer; font-size: 16px;
         }
 
-        /* --- 5. MODAL & PDF VIEWER --- */
-        .overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
-        .modal { background: var(--surface); width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; padding: 24px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
-        .modal.full { height: 95vh; padding: 0; display: flex; flex-direction: column; }
+        /* --- 5. MODAL & PDF --- */
+        .overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(2px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
+        .modal { background: var(--surface); width: 100%; max-width: 600px; border-radius: 24px 24px 0 0; padding: 24px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal.full { height: 100vh; max-height: 100vh; border-radius: 0; padding: 0; display: flex; flex-direction: column; }
         
-        .pdf-header { padding: 12px 20px; background: white; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .pdf-frame { flex: 1; width: 100%; border: none; background: #eee; }
+        .pdf-header { padding: 10px 15px; background: white; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; height: 50px; }
+        .pdf-frame { flex: 1; width: 100%; height: 100%; border: none; background: #f1f5f9; display: block; }
 
         /* Login Screen */
-        #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; padding: 20px; text-align: center; }
-        .login-logo { width: 100px; height: 100px; margin-bottom: 20px; border-radius: 20px; box-shadow: var(--shadow-card); object-fit: contain; }
-        .search-login-box { width: 100%; padding: 15px; border-radius: 30px; border: 1px solid var(--border); background: white; box-shadow: var(--shadow-card); text-align: center; }
-        .unit-list { margin-top: 15px; width: 100%; background: white; border-radius: 16px; border: 1px solid var(--border); max-height: 300px; overflow-y: auto; display: none; text-align: left; }
-        .unit-item { padding: 15px; border-bottom: 1px solid var(--border); cursor: pointer; font-size: 14px; font-weight: 500; }
+        #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; text-align: center; background: white; }
+        .login-logo { width: 90px; height: 90px; margin-bottom: 20px; border-radius: 20px; object-fit: contain; }
+        .search-login-box { padding: 16px; border-radius: 16px; border: 1px solid var(--border); background: #f8fafc; box-shadow: var(--shadow-card); text-align: center; font-size: 16px; font-weight: 500; }
+        .unit-list { margin-top: 15px; width: 100%; background: white; border-radius: 16px; border: 1px solid var(--border); max-height: 40vh; overflow-y: auto; display: none; text-align: left; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
+        .unit-item { padding: 16px; border-bottom: 1px solid var(--border); cursor: pointer; font-size: 14px; font-weight: 600; color: var(--brand-dark); }
         .unit-item:active { background: #f0fdfa; color: var(--brand-teal); }
 
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        @keyframes slideIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
         /* Utils */
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 10px 20px; border-radius: 50px; font-size: 13px; z-index: 3000; display: none; }
-        #loader { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(255,255,255,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; flex-direction: column; }
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 12px 24px; border-radius: 50px; font-size: 14px; font-weight: 600; z-index: 3000; display: none; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); width: max-content; }
+        #loader { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(255,255,255,0.8); backdrop-filter: blur(2px); z-index: 2000; display: none; align-items: center; justify-content: center; flex-direction: column; }
         .spinner { width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top-color: var(--brand-teal); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 10px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        @media (min-width: 600px) { .overlay { align-items: center; padding: 20px; } .modal { border-radius: 20px; max-height: 85vh; } }
+        @media (min-width: 600px) { 
+            .overlay { align-items: center; padding: 20px; } 
+            .modal { border-radius: 20px; max-height: 85vh; } 
+            .menu-card { min-height: 160px; }
+        }
+        
+        /* Empty State */
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-sub); font-size: 14px; font-style: italic; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <img src="logo.jpeg" class="login-logo" onerror="this.style.display='none'" alt="Logo PANDU-GI">
+        <div style="font-weight: 900; font-size: 40px; color: var(--brand-teal); margin-bottom: 10px; letter-spacing: -1px;">PG</div>
+        <h1 style="margin:0; color:var(--brand-dark); font-size:24px; font-weight: 800;">PANDU-GI</h1>
+        <p style="margin:5px 0 30px 0; color:var(--text-sub); font-size: 14px;">Asisten Digital Operator Gardu Induk</p>
         
-        <h1 style="margin:0; color:var(--brand-dark); font-size:28px;">PANDU-GI</h1>
-        <p style="margin:5px 0 30px 0; color:var(--text-sub);">Pusat Bantuan Digital Unit Gardu Induk</p>
+        <div style="width: 100%; max-width: 320px; position: relative;">
+            <input type="text" id="login-search" class="search-login-box" placeholder="🔍 Pilih Lokasi Unit..." readonly onclick="toggleUnitList()">
+            <div id="unit-list" class="unit-list"></div>
+        </div>
         
-        <input type="text" id="login-search" class="search-login-box" placeholder="🔍 Pilih Gardu Induk..." readonly onclick="toggleUnitList()">
-        
-        <div id="unit-list" class="unit-list"></div>
-        
-        <button onclick="hardReset()" style="margin-top:40px; background:none; border:none; color:#cbd5e1; font-size:11px; cursor:pointer;">[ Reset Aplikasi ]</button>
+        <div style="margin-top: auto; padding-top: 20px;">
+            <button onclick="hardReset()" style="background:none; border:none; color:#cbd5e1; font-size:11px; cursor:pointer; text-decoration: underline;">Reset Aplikasi (Clear Cache)</button>
+        </div>
     </div>
 
-    <div id="app-header" style="display: none;">
+    <div id="app-wrapper" style="display: none;">
         <div class="top-bar">
             <div class="top-bar-title">PANDU-GI</div>
-            <div class="header-logo-circle">
-                <img src="logo.jpeg" onerror="this.style.display='none'">
-            </div>
+            <div class="header-logo-circle">PRO</div>
         </div>
         
         <div class="sub-header">
             <div style="flex-grow:1; display:flex; align-items:center; gap:8px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
-                <span class="brand-row">PANDU-GI</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                <span class="brand-row">Unit:</span>
                 <span class="unit-badge" id="header-unit-name">...</span>
             </div>
-            <button id="nav-back-btn" onclick="goHome()" style="display:none; background:#f1f5f9; border:none; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:700; color:var(--text-sub); cursor:pointer;">&larr; Menu</button>
+            <button id="nav-back-btn" onclick="handleBack()" style="display:none; background:#f1f5f9; border:none; padding:8px 16px; border-radius:20px; font-size:12px; font-weight:700; color:var(--text-main); cursor:pointer;">&larr; Menu</button>
         </div>
-    </div>
 
-    <div class="container" id="app-container" style="display: none;">
-        
-        <div id="main-menu">
-            <div class="greeting-area">
-                <h2 class="greeting-title">Selamat Bertugas</h2>
-                <div class="greeting-sub">Unit: <b id="dashboard-unit-name">...</b></div>
-                <div style="font-size:11px; color:var(--brand-teal); margin-top:5px; cursor:pointer;" onclick="logout()">[ Ganti Lokasi ]</div>
-            </div>
-
-            <div class="menu-grid">
-                <div class="menu-card" onclick="openSection('section-annunciator')">
-                    <div class="icon-box ic-blue">🔔</div>
-                    <div class="menu-name">Cari Alarm</div>
-                    <div class="menu-info">Data Annunciator</div>
+        <div class="container">
+            
+            <div id="main-menu" class="app-section active">
+                <div class="greeting-area">
+                    <h2 class="greeting-title">Selamat Bertugas</h2>
+                    <div class="greeting-sub">Lokasi: <b id="dashboard-unit-name">...</b></div>
+                    <div style="font-size:12px; color:var(--brand-teal); margin-top:8px; display: inline-block; font-weight: 600; cursor: pointer;" onclick="logout()">[ 🔄 Ganti Lokasi ]</div>
                 </div>
 
-                <div class="menu-card" onclick="openSection('section-asset')">
-                    <div class="icon-box ic-purple">🖥️</div>
-                    <div class="menu-name">Data Peralatan</div>
-                    <div class="menu-info">Spesifikasi Asset</div>
-                </div>
-
-                <div class="menu-card" onclick="openSection('section-sop')">
-                    <div class="icon-box ic-green">📄</div>
-                    <div class="menu-name">SOP</div>
-                    <div class="menu-info">Manual Book PDF</div>
-                </div>
-
-                <div class="menu-card" onclick="openSection('section-contact')">
-                    <div class="icon-box ic-orange">📞</div>
-                    <div class="menu-name">Kontak</div>
-                    <div class="menu-info">Nomor Darurat</div>
-                </div>
-
-                <div class="menu-card menu-full" onclick="openSection('section-database')">
-                    <div class="icon-box ic-gray">☁️</div>
-                    <div class="menu-text">
-                        <div class="menu-name">Akses Database</div>
-                        <div class="menu-info">Google Drive & Backup</div>
+                <div class="menu-grid">
+                    <div class="menu-card" onclick="navigateTo('section-annunciator')">
+                        <div class="icon-box ic-blue">🔔</div>
+                        <div class="menu-name">Cari Alarm</div>
+                        <div class="menu-info">Kamus Annunciator</div>
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <div id="section-annunciator" class="app-section">
-            <div style="position:sticky; top:0; background:var(--bg-body); padding-bottom:10px; z-index:10;">
-                <input type="text" id="search-ann" placeholder="Cari nama alarm / indikasi..." oninput="renderAnnunciator()" style="box-shadow:var(--shadow-card); border-color:transparent;">
-                <button class="btn btn-primary" onclick="openModal('modal-ann')">+ Input Alarm Baru</button>
-            </div>
-            <div id="list-ann"></div>
-        </div>
+                    <div class="menu-card" onclick="navigateTo('section-asset')">
+                        <div class="icon-box ic-purple">⚡</div>
+                        <div class="menu-name">Data Asset</div>
+                        <div class="menu-info">Manual Book & Spec</div>
+                    </div>
 
-        <div id="section-sop" class="app-section">
-            <div class="data-card" style="border-top: 4px solid var(--success);">
-                <div class="data-title">Simpan SOP Offline</div>
-                <p style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">Upload file PDF agar bisa dibaca saat tidak ada sinyal.</p>
-                <input type="text" id="sop-name" placeholder="Judul SOP">
-                <input type="file" id="sop-file" accept="application/pdf">
-                <button class="btn btn-success" onclick="saveSOP()">Simpan ke Aplikasi</button>
-            </div>
-            <div style="font-size:11px; font-weight:700; color:var(--text-sub); margin-bottom:10px; letter-spacing:0.5px;">DAFTAR SOP TERSIMPAN</div>
-            <div id="list-sop"></div>
-        </div>
+                    <div class="menu-card" onclick="navigateTo('section-sop')">
+                        <div class="icon-box ic-green">📑</div>
+                        <div class="menu-name">SOP</div>
+                        <div class="menu-info">Dokumen Instruksi</div>
+                    </div>
 
-        <div id="section-asset" class="app-section">
-            <div class="data-card" style="border-top: 4px solid var(--purple);">
-                <div class="data-title">Simpan Data Peralatan</div>
-                <p style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">Upload Manual Book / Gambar Teknik (PDF).</p>
-                <input type="text" id="asset-name" placeholder="Judul Dokumen">
-                <input type="file" id="asset-file" accept="application/pdf">
-                <button class="btn btn-primary" style="background:var(--purple);" onclick="saveAsset()">Simpan ke Aplikasi</button>
-            </div>
-            <div style="font-size:11px; font-weight:700; color:var(--text-sub); margin-bottom:10px; letter-spacing:0.5px;">FILE TERSIMPAN</div>
-            <div id="list-asset"></div>
-        </div>
+                    <div class="menu-card" onclick="navigateTo('section-contact')">
+                        <div class="icon-box ic-orange">☎️</div>
+                        <div class="menu-name">Kontak</div>
+                        <div class="menu-info">Emergency Call</div>
+                    </div>
 
-        <div id="section-database" class="app-section">
-            <div class="data-card" style="text-align:center; padding:30px 20px;">
-                <div style="font-size:40px; margin-bottom:10px;">☁️</div>
-                <h3 style="margin:0; font-size:18px;">Google Drive Utama</h3>
-                <p style="font-size:12px; color:var(--text-sub); margin:5px 0 20px 0;">Pusat seluruh data online (SOP, Asset, Laporan).</p>
-                <button class="btn btn-primary" onclick="openGDrive()">Buka Folder Drive ↗️</button>
-                
-                <div style="margin-top:15px; padding-top:15px; border-top:1px dashed var(--border); text-align:left;">
-                    <label class="lbl">Link Folder</label>
-                    <div style="display:flex; gap:5px;">
-                        <input type="text" id="in-gdrive-link" placeholder="Paste link..." style="margin:0">
-                        <button class="btn btn-secondary" onclick="saveGDriveLink()" style="width:auto; margin:0">Set</button>
+                    <div class="menu-card menu-full" onclick="navigateTo('section-database')">
+                        <div class="icon-box ic-gray">☁️</div>
+                        <div class="menu-text">
+                            <div class="menu-name">Database & Backup</div>
+                            <div class="menu-info">Google Drive & JSON Export</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="data-card">
-                <div class="data-title">Backup & Restore</div>
-                <p style="font-size:12px; color:var(--text-sub); margin-bottom:15px;">Amankan data aplikasi (Alarm & Kontak) ke format JSON.</p>
+            <div id="section-annunciator" class="app-section">
+                <div style="position:sticky; top:130px; background:var(--bg-body); padding-bottom:15px; z-index:10; margin-top: -10px;">
+                    <div style="background: var(--surface); padding: 10px; border-radius: 12px; border: 1px solid var(--border); display: flex; gap: 8px;">
+                        <input type="text" id="search-ann" placeholder="Ketik nama alarm..." oninput="debounceSearch()" style="margin:0; border:none; box-shadow:none; padding: 0 5px;">
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 10px; margin-bottom: 0;" onclick="openModal('modal-ann')">+ Tambah Data Alarm</button>
+                </div>
+                <div id="list-ann" style="padding-bottom: 40px;"></div>
+            </div>
+
+            <div id="section-sop" class="app-section">
+                <div class="data-card" style="border-left: 4px solid var(--success);">
+                    <div class="data-title">Upload SOP Baru (PDF)</div>
+                    <p style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">File tersimpan di memori browser (Offline Mode).</p>
+                    <input type="text" id="sop-name" placeholder="Judul SOP...">
+                    <input type="file" id="sop-file" accept="application/pdf">
+                    <button class="btn btn-success" onclick="saveSOP()">Simpan ke Aplikasi</button>
+                </div>
+                <div style="font-size:12px; font-weight:800; color:var(--text-sub); margin: 20px 0 10px; letter-spacing:0.5px;">ARSIP OFFLINE</div>
+                <div id="list-sop"></div>
+            </div>
+
+            <div id="section-asset" class="app-section">
+                <div class="data-card" style="border-left: 4px solid var(--purple);">
+                    <div class="data-title">Upload Data Asset (PDF)</div>
+                    <p style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">Simpan wiring diagram atau manual book.</p>
+                    <input type="text" id="asset-name" placeholder="Nama Asset...">
+                    <input type="file" id="asset-file" accept="application/pdf">
+                    <button class="btn btn-primary" style="background:var(--purple);" onclick="saveAsset()">Simpan</button>
+                </div>
+                <div style="font-size:12px; font-weight:800; color:var(--text-sub); margin: 20px 0 10px; letter-spacing:0.5px;">FILE TERSIMPAN</div>
+                <div id="list-asset"></div>
+            </div>
+
+            <div id="section-database" class="app-section">
+                <div class="data-card" style="text-align:center; padding:30px 20px;">
+                    <div style="font-size:40px; margin-bottom:10px;">📁</div>
+                    <h3 style="margin:0; font-size:18px;">Google Drive Unit</h3>
+                    <p style="font-size:12px; color:var(--text-sub); margin:5px 0 20px 0;">Akses folder awan utama unit ini.</p>
+                    <button class="btn btn-primary" onclick="openGDrive()">Buka Google Drive ↗️</button>
+                    
+                    <div style="margin-top:20px; text-align:left;">
+                        <label class="lbl">Set Link Drive (Khusus Admin)</label>
+                        <div style="display:flex; gap:8px;">
+                            <input type="text" id="in-gdrive-link" placeholder="https://drive.google.com/..." style="margin:0">
+                            <button class="btn btn-secondary" onclick="saveGDriveLink()" style="width:auto; margin:0">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-card">
+                    <div class="data-title">Backup & Restore Lokal</div>
+                    <p style="font-size:12px; color:var(--text-sub); margin-bottom:15px;">Pindahkan data antar HP menggunakan file JSON.</p>
+                    
+                    <button class="btn btn-secondary" onclick="exportData()">⬇️ Download Backup (JSON)</button>
+                    
+                    <div style="margin-top:15px; padding-top:15px; border-top:1px dashed var(--border);">
+                        <label class="lbl">Restore dari File</label>
+                        <input type="file" id="import-file" accept=".json">
+                        <button class="btn btn-success" onclick="executeImport()">Upload & Restore</button>
+                    </div>
+                </div>
                 
-                <button class="btn btn-secondary" onclick="exportData()">⬇️ Export Data JSON</button>
-                
-                <div style="margin-top:15px; padding-top:15px; border-top:1px dashed var(--border);">
-                    <label class="lbl">Restore Data</label>
-                    <input type="file" id="import-file" accept=".json">
-                    <button class="btn btn-success" onclick="importData(document.getElementById('import-file'))">Restore JSON</button>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button onclick="resetApp()" style="background:none; border:none; color:var(--danger); font-weight:700; font-size:12px; cursor:pointer;">⚠️ HAPUS SEMUA DATA UNIT INI</button>
                 </div>
             </div>
 
-            <button class="btn btn-danger" onclick="resetApp()" style="margin-top:20px;">⚠️ Reset Data Unit Ini</button>
-        </div>
+            <div id="section-contact" class="app-section">
+                <button class="btn btn-primary" onclick="openModal('modal-contact')">+ Tambah Kontak Baru</button>
+                <div id="list-contact" style="margin-top:15px;"></div>
+            </div>
 
-        <div id="section-contact" class="app-section">
-            <button class="btn btn-primary" onclick="openModal('modal-contact')">+ Tambah Kontak</button>
-            <div id="list-contact" style="margin-top:15px;"></div>
         </div>
-
     </div>
 
     <div id="modal-ann" class="overlay">
         <div class="modal">
             <h3 style="margin-top:0">Form Alarm</h3>
             <input type="hidden" id="ann-id">
-            <label class="lbl">Unit / Bay</label><input id="ann-unit">
-            <label class="lbl">Nama Alarm</label><input id="ann-name">
-            <label class="lbl">Indikasi</label><textarea id="ann-ind" rows="2"></textarea>
-            <label class="lbl">Penyebab</label><textarea id="ann-cause" rows="2"></textarea>
-            <label class="lbl">Tindakan</label><textarea id="ann-action" rows="2"></textarea>
-            <div style="display:flex; gap:10px; margin-top:10px;">
-                <button class="btn btn-primary" onclick="saveAnnItem()">Simpan</button>
-                <button class="btn btn-secondary" onclick="closeModal('modal-ann')">Tutup</button>
+            
+            <label class="lbl">Unit / Bay / Panel</label>
+            <input id="ann-unit" placeholder="Cth: Bay Penghantar 1">
+            
+            <label class="lbl">Nama Alarm (Sesuai Display)</label>
+            <input id="ann-name" placeholder="Cth: DISTANCE PROT TRIP">
+            
+            <label class="lbl">Indikasi (Lampu/Bendera)</label>
+            <textarea id="ann-ind" rows="2"></textarea>
+            
+            <label class="lbl">Penyebab Kemungkinan</label>
+            <textarea id="ann-cause" rows="2"></textarea>
+            
+            <label class="lbl">Tindakan / Penanganan</label>
+            <textarea id="ann-action" rows="3"></textarea> <div style="display:flex; gap:10px; margin-top:15px;">
+                <button class="btn btn-secondary" onclick="closeModal('modal-ann')">Batal</button>
+                <button class="btn btn-primary" onclick="saveAnnItem()">SIMPAN</button>
             </div>
         </div>
     </div>
@@ -397,28 +420,30 @@
         <div class="modal">
             <h3 style="margin-top:0">Data Kontak</h3>
             <input type="hidden" id="contact-id">
-            <label class="lbl">Nama</label><input id="contact-name">
-            <label class="lbl">No. Telepon</label><input type="tel" id="contact-num">
-            <button class="btn btn-primary" onclick="saveContactItem()">Simpan</button>
-            <button class="btn btn-secondary" style="margin-top:10px" onclick="closeModal('modal-contact')">Batal</button>
+            <label class="lbl">Nama Pejabat / Instansi</label><input id="contact-name">
+            <label class="lbl">No. Telepon / WA</label><input type="tel" id="contact-num">
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <button class="btn btn-secondary" onclick="closeModal('modal-contact')">Batal</button>
+                <button class="btn btn-primary" onclick="saveContactItem()">SIMPAN</button>
+            </div>
         </div>
     </div>
 
-    <div id="modal-pdf" class="overlay">
+    <div id="modal-pdf" class="overlay" style="z-index: 5000;">
         <div class="modal full">
             <div class="pdf-header">
-                <b id="pdf-title">Dokumen</b>
-                <button onclick="closeModal('modal-pdf')" style="background:none; border:none; font-weight:700; color:var(--text-main);">Tutup ✕</button>
+                <div id="pdf-title" style="font-weight:700; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:80%;">Dokumen</div>
+                <button onclick="closeModal('modal-pdf')" style="background:#f1f5f9; border:none; padding:8px 12px; border-radius:8px; font-weight:700; color:var(--text-main); font-size:12px;">TUTUP</button>
             </div>
             <iframe id="pdf-frame" class="pdf-frame"></iframe>
         </div>
     </div>
 
-    <div id="loader"><div class="spinner"></div><div>Memproses...</div></div>
+    <div id="loader"><div class="spinner"></div><div style="font-weight:600; font-size:14px;">Memproses Data...</div></div>
     <div id="toast">Berhasil disimpan!</div>
 
 <script>
-// --- DATA AWAL ---
+// --- KONFIGURASI UNIT ---
 const UNITS = [
     { id: 'fajar', name: 'GI 150 KV FAJAR SURYAWISESA' },
     { id: 'gandamekar', name: 'GI 150 KV GANDAMEKAR' },
@@ -435,15 +460,23 @@ const UNITS = [
 
 const MASTER_LINK = "https://drive.google.com/drive/folders/13vT0iXCJLjer9sMS5VWI5jjchFk4ntmo?usp=sharing";
 
-// VARIABLES
+// GLOBAL STATE
 let currentUnitId = null;
 let db = { anns: [], contacts: [] };
 let idb;
 let driveLink = "";
+let searchTimeout;
 
 // --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
     initAppSequence();
+    
+    // Handle Hardware Back Button Android
+    window.addEventListener('popstate', (event) => {
+        if (document.getElementById('main-menu').style.display === 'none') {
+            goHome(false); // False means don't push state again
+        }
+    });
 });
 
 function initAppSequence() {
@@ -480,17 +513,19 @@ function login(unitId) {
     currentUnitId = unitId;
     localStorage.setItem('pandu_active_unit', unitId);
 
-    // Load Data Text
+    // Load Text Data (LocalStorage)
     try {
         const saved = localStorage.getItem(`pandu_db_${unitId}`);
         if(saved) {
             let t = JSON.parse(saved);
-            if(t.alarms) { // Migrasi format lama
+            // Migrasi format lama jika ada
+            if(t.alarms) {
                 t.anns = t.alarms.map(x=>({id:x.id||Date.now(), unit:x.s, name:x.a, ind:x.m, cause:x.p, act:x.t}));
                 delete t.alarms;
             }
             db = t;
             if(!db.anns) db.anns = [];
+            if(!db.contacts) db.contacts = [];
         } else {
             db = { anns: [], contacts: [] };
         }
@@ -500,51 +535,73 @@ function login(unitId) {
     driveLink = localStorage.getItem(`pandu_drive_${unitId}`) || MASTER_LINK;
     document.getElementById('in-gdrive-link').value = driveLink;
 
-    // Init DB File
+    // Init DB File (IndexedDB)
     initIndexedDB(unitId);
 
     // Update UI
-    document.getElementById('header-unit-name').innerText = unit.name; // Di Header
-    document.getElementById('dashboard-unit-name').innerText = unit.name; // Di Dashboard
+    document.getElementById('header-unit-name').innerText = unit.name.replace('GI 150 KV ', '').replace('GIS 150 KV ', '');
+    document.getElementById('dashboard-unit-name').innerText = unit.name;
     
     document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app-header').style.display = 'block';
-    document.getElementById('app-container').style.display = 'block';
+    document.getElementById('app-wrapper').style.display = 'block';
     
-    goHome();
+    goHome(true);
 }
 
 function logout() {
-    if(confirm('Ganti Unit Gardu Induk?')) {
+    if(confirm('Keluar dari unit ini?')) {
         localStorage.removeItem('pandu_active_unit');
         location.reload();
     }
 }
 
 function hardReset() {
-    if(confirm('Reset total aplikasi? Data akan hilang.')) {
+    if(confirm('PERINGATAN: Reset akan menghapus seluruh data yang tersimpan di browser ini. Lanjutkan?')) {
         localStorage.clear();
-        location.reload();
+        indexedDB.databases().then(dbs => {
+            dbs.forEach(db => indexedDB.deleteDatabase(db.name));
+        });
+        setTimeout(() => location.reload(), 500);
     }
 }
 
-// --- NAVIGATION ---
-function goHome() {
+// --- NAVIGATION MANAGER ---
+function goHome(pushHistory = true) {
     document.querySelectorAll('.app-section').forEach(el => el.classList.remove('active'));
+    document.getElementById('main-menu').classList.add('active');
     document.getElementById('main-menu').style.display = 'block';
     document.getElementById('nav-back-btn').style.display = 'none';
+    
+    // Clear search bar
+    document.getElementById('search-ann').value = '';
+    
+    window.scrollTo(0,0);
+    if(pushHistory) history.replaceState(null, null, location.pathname);
+}
+
+function navigateTo(sectionId) {
+    document.getElementById('main-menu').style.display = 'none';
+    document.querySelectorAll('.app-section').forEach(el => el.classList.remove('active'));
+    
+    const target = document.getElementById(sectionId);
+    target.classList.add('active');
+    document.getElementById('nav-back-btn').style.display = 'block';
+    
+    // Push history state to enable Back button functionality
+    history.pushState({ section: sectionId }, "", "#" + sectionId);
+
+    // Init Section Data
+    if(sectionId === 'section-annunciator') renderAnnunciator();
+    if(sectionId === 'section-contact') renderContact();
+    if(sectionId === 'section-sop') renderFiles('sops', 'list-sop');
+    if(sectionId === 'section-asset') renderFiles('assets', 'list-asset');
+    
     window.scrollTo(0,0);
 }
 
-function openSection(id) {
-    document.getElementById('main-menu').style.display = 'none';
-    document.getElementById(id).classList.add('active');
-    document.getElementById('nav-back-btn').style.display = 'block';
-    
-    if(id === 'section-annunciator') renderAnnunciator();
-    if(id === 'section-contact') renderContact();
-    if(id === 'section-sop') renderFiles('sops', 'list-sop');
-    if(id === 'section-asset') renderFiles('assets', 'list-asset');
+function handleBack() {
+    // Trigger browser back behavior which calls popstate
+    history.back();
 }
 
 // --- DRIVE LINK ---
@@ -554,8 +611,7 @@ function saveGDriveLink() {
     driveLink = val; showToast("Link tersimpan");
 }
 function openGDrive() {
-    if(driveLink) window.open(driveLink, '_blank');
-    else window.open(MASTER_LINK, '_blank');
+    window.open(driveLink || MASTER_LINK, '_blank');
 }
 
 // --- INDEXED DB (FILE SYSTEM) ---
@@ -572,8 +628,11 @@ function initIndexedDB(uid) {
 function saveFile(store, nameId, fileId) {
     const name = document.getElementById(nameId).value;
     const file = document.getElementById(fileId).files[0];
-    if(!name || !file) return alert("Lengkapi Data!");
+    if(!name || !file) return alert("Mohon lengkapi judul dan pilih file PDF.");
     
+    // Limit file size (e.g. 10MB) to prevent crash
+    if(file.size > 10 * 1024 * 1024) return alert("File terlalu besar (Maks 10MB)");
+
     document.getElementById('loader').style.display='flex';
     const reader = new FileReader();
     reader.onload = e => {
@@ -581,22 +640,26 @@ function saveFile(store, nameId, fileId) {
         tx.objectStore(store).add({
             name: name,
             blob: new Blob([e.target.result], {type: 'application/pdf'}),
-            date: new Date().toLocaleDateString()
+            date: new Date().toLocaleDateString('id-ID')
         });
         tx.oncomplete = () => {
             document.getElementById('loader').style.display='none';
-            showToast("Berhasil Disimpan");
+            showToast("File Berhasil Disimpan");
             document.getElementById(nameId).value = "";
             document.getElementById(fileId).value = "";
             renderFiles(store, store==='sops'?'list-sop':'list-asset');
         };
+        tx.onerror = () => {
+            document.getElementById('loader').style.display='none';
+            alert("Gagal menyimpan. Memori penuh?");
+        }
     };
     reader.readAsArrayBuffer(file);
 }
 
 function renderFiles(store, listId) {
     const list = document.getElementById(listId);
-    list.innerHTML = "<div class='spinner' style='width:20px;height:20px;margin:10px auto'></div>";
+    list.innerHTML = "<div class='spinner' style='width:25px;height:25px;margin:10px auto'></div>";
     
     if(!idb) { setTimeout(() => renderFiles(store, listId), 500); return; }
     
@@ -604,21 +667,26 @@ function renderFiles(store, listId) {
     tx.objectStore(store).getAll().onsuccess = e => {
         const res = e.target.result.reverse();
         list.innerHTML = "";
-        if(res.length === 0) list.innerHTML = "<div class='empty-state'>Belum ada file.</div>";
+        if(res.length === 0) {
+            list.innerHTML = "<div class='empty-state'>Belum ada dokumen tersimpan.</div>";
+            return;
+        }
         
+        let html = '';
         res.forEach(f => {
-            list.innerHTML += `
+            html += `
             <div class="data-card" style="display:flex; justify-content:space-between; align-items:center; padding:12px;">
-                <div style="overflow:hidden;">
-                    <div style="font-weight:700; font-size:14px;">${f.name}</div>
-                    <div style="font-size:11px; color:var(--text-sub);">${f.date}</div>
+                <div style="overflow:hidden; flex:1; margin-right:10px;">
+                    <div style="font-weight:700; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${f.name}</div>
+                    <div style="font-size:11px; color:var(--text-sub);">Diupload: ${f.date}</div>
                 </div>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn-secondary" style="width:auto; padding:6px 10px;" onclick="openPdf('${store}',${f.id},'${f.name}')">Buka</button>
-                    <button class="btn-danger" style="width:auto; padding:6px 10px;" onclick="delFile('${store}',${f.id})">🗑️</button>
+                <div style="display:flex; gap:8px; flex-shrink:0;">
+                    <button class="btn-secondary" style="width:auto; padding:6px 12px; margin:0; font-size:12px;" onclick="openPdf('${store}',${f.id},'${f.name.replace(/'/g, "\\'")}')">Buka</button>
+                    <button class="btn-danger" style="width:auto; padding:6px 10px; margin:0;" onclick="delFile('${store}',${f.id})">🗑️</button>
                 </div>
             </div>`;
         });
+        list.innerHTML = html;
     };
 }
 
@@ -631,90 +699,142 @@ function openPdf(store, id, title) {
             document.getElementById('pdf-title').innerText = title;
             document.getElementById('pdf-frame').src = url;
             document.getElementById('modal-pdf').style.display = 'flex';
-        } else { alert("File error"); }
+        } else { alert("File korup atau tidak ditemukan."); }
     };
 }
 
 function delFile(store, id) {
-    if(confirm('Hapus?')) {
+    if(confirm('Hapus file ini permanen?')) {
         const tx = idb.transaction(store, 'readwrite');
         tx.objectStore(store).delete(id).oncomplete = () => renderFiles(store, store==='sops'?'list-sop':'list-asset');
     }
 }
 
-// --- CRUD DATA ---
+// --- CRUD DATA (TEXT) ---
 function saveDB() { localStorage.setItem(`pandu_db_${currentUnitId}`, JSON.stringify(db)); }
+
+function debounceSearch() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(renderAnnunciator, 300);
+}
 
 function renderAnnunciator() {
     const list = document.getElementById('list-ann');
-    const key = document.getElementById('search-ann').value.toLowerCase();
+    const rawKey = document.getElementById('search-ann').value.toLowerCase();
+    const keyParts = rawKey.split(' ').filter(k => k.trim() !== ''); // Support multi-keyword search
+    
+    // Safety check if db.anns is undefined
+    if(!db.anns) db.anns = [];
+    
+    // Optimization: Render empty string first
     list.innerHTML = "";
     
-    const f = db.anns.filter(x => (x.unit+x.name+x.ind+x.cause+x.act).toLowerCase().includes(key));
-    if(f.length === 0) return list.innerHTML = "<div class='empty-state'>Tidak ditemukan.</div>";
+    const filtered = db.anns.filter(x => {
+        // Safe access to properties
+        const text = ((x.unit||'') + ' ' + (x.name||'') + ' ' + (x.ind||'') + ' ' + (x.cause||'') + ' ' + (x.act||'')).toLowerCase();
+        // Check if ALL keywords exist in the text
+        return keyParts.every(part => text.includes(part));
+    });
+
+    if(filtered.length === 0) {
+        list.innerHTML = rawKey ? "<div class='empty-state'>Tidak ditemukan hasil pencarian.</div>" : "<div class='empty-state'>Ketik nama alarm di kolom pencarian.</div>";
+        return;
+    }
     
-    f.forEach(i => {
-        list.innerHTML += `
+    // Limit render to 50 items for performance
+    const renderLimit = 50;
+    const itemsToRender = filtered.slice(0, renderLimit);
+    
+    let htmlContent = "";
+    itemsToRender.forEach(i => {
+        // Escaping strings to prevent HTML breaking
+        const safeName = (i.name || '').replace(/"/g, '&quot;');
+        
+        htmlContent += `
         <div class="data-card">
             <button class="delete-btn" onclick="delAnn('${i.id}')">✕</button>
-            <div class="data-badge">${i.unit}</div>
-            <div class="data-title" onclick="editAnn('${i.id}')">${i.name}</div>
-            <div class="lbl">Indikasi</div><div class="val">${i.ind}</div>
-            <div class="lbl">Penyebab</div><div class="val">${i.cause}</div>
-            <div class="lbl">Tindakan</div><div class="val">${i.act}</div>
+            <div class="data-badge">${i.unit || '-'}</div>
+            <div class="data-title" style="cursor:pointer; color:var(--brand-teal);" onclick="editAnn('${i.id}')">📝 ${i.name}</div>
+            <div class="lbl">Indikasi</div><div class="val">${i.ind || '-'}</div>
+            <div class="lbl">Penyebab</div><div class="val">${i.cause || '-'}</div>
+            <div class="lbl">Tindakan</div><div class="val" style="font-weight:600; color:var(--brand-dark);">${i.act || '-'}</div>
         </div>`;
     });
+    
+    if(filtered.length > renderLimit) {
+        htmlContent += `<div style="text-align:center; padding:10px; font-size:12px; color:var(--text-sub);">Menampilkan 50 dari ${filtered.length} hasil. Perspesifik pencarian.</div>`;
+    }
+
+    list.innerHTML = htmlContent;
 }
 
 function saveAnnItem() {
     const id = document.getElementById('ann-id').value || Date.now().toString();
+    
+    // CRITICAL FIX: ID for action was 'ann-act' in JS but 'ann-action' in HTML
     const item = {
         id: id,
         unit: document.getElementById('ann-unit').value,
         name: document.getElementById('ann-name').value,
         ind: document.getElementById('ann-ind').value,
         cause: document.getElementById('ann-cause').value,
-        act: document.getElementById('ann-act').value
+        act: document.getElementById('ann-action').value 
     };
-    if(!item.name) return alert("Isi Nama Alarm");
+
+    if(!item.name) return alert("Nama Alarm wajib diisi!");
     
-    const idx = db.anns.findIndex(x=>x.id==id);
+    const idx = db.anns.findIndex(x => x.id == id);
     if(idx > -1) db.anns[idx] = item; else db.anns.unshift(item);
     
-    saveDB(); closeModal('modal-ann'); renderAnnunciator(); showToast("Tersimpan");
+    saveDB(); 
+    closeModal('modal-ann'); 
+    renderAnnunciator(); 
+    showToast("Alarm Tersimpan");
 }
 
 function editAnn(id) {
-    const x = db.anns.find(i=>i.id==id);
+    const x = db.anns.find(i => i.id == id);
+    if(!x) return;
     document.getElementById('ann-id').value = x.id;
-    document.getElementById('ann-unit').value = x.unit;
-    document.getElementById('ann-name').value = x.name;
-    document.getElementById('ann-ind').value = x.ind;
-    document.getElementById('ann-cause').value = x.cause;
-    document.getElementById('ann-act').value = x.act;
+    document.getElementById('ann-unit').value = x.unit || '';
+    document.getElementById('ann-name').value = x.name || '';
+    document.getElementById('ann-ind').value = x.ind || '';
+    document.getElementById('ann-cause').value = x.cause || '';
+    document.getElementById('ann-action').value = x.act || ''; // Use x.act as per Data Structure
     openModal('modal-ann');
 }
 
 function delAnn(id) {
-    if(confirm('Hapus alarm ini?')) {
+    if(confirm('Hapus alarm ini dari database?')) {
         db.anns = db.anns.filter(x => x.id != id);
-        saveDB(); renderAnnunciator();
+        saveDB(); 
+        renderAnnunciator();
     }
 }
 
 function renderContact() {
-    const list = document.getElementById('list-contact'); list.innerHTML = "";
+    const list = document.getElementById('list-contact'); 
+    list.innerHTML = "";
+    if(!db.contacts || db.contacts.length === 0) return list.innerHTML = "<div class='empty-state'>Belum ada kontak.</div>";
+
     db.contacts.forEach(c => {
         list.innerHTML += `
         <div class="data-card" style="display:flex; justify-content:space-between; align-items:center;">
-            <div><div class="data-title" style="margin:0">${c.name}</div><div style="color:var(--primary); font-weight:600;">${c.num}</div></div>
+            <div>
+                <div class="data-title" style="margin:0">${c.name}</div>
+                <a href="tel:${c.num}" style="color:var(--brand-teal); font-weight:700; text-decoration:none; font-size:14px; display:block; margin-top:4px;">📞 ${c.num}</a>
+            </div>
             <button class="delete-btn" style="position:static;" onclick="delCont('${c.id}')">✕</button>
         </div>`;
     });
 }
 
 function saveContactItem() {
-    const item = { id: Date.now().toString(), name: document.getElementById('contact-name').value, num: document.getElementById('contact-num').value };
+    const item = { 
+        id: Date.now().toString(), 
+        name: document.getElementById('contact-name').value, 
+        num: document.getElementById('contact-num').value 
+    };
     if(!item.name) return;
     db.contacts.push(item); saveDB(); closeModal('modal-contact'); renderContact();
 }
@@ -728,34 +848,38 @@ function saveSOP() { saveFile('sops', 'sop-name', 'sop-file'); }
 function saveAsset() { saveFile('assets', 'asset-name', 'asset-file'); }
 
 function exportData() {
-    const s = JSON.stringify(db);
+    const s = JSON.stringify(db, null, 2);
     const b = new Blob([s], {type:"application/json"});
     const url = URL.createObjectURL(b);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `BACKUP_${currentUnitId}.json`;
+    a.download = `BACKUP_${currentUnitId}_${new Date().toISOString().slice(0,10)}.json`;
     document.body.appendChild(a); a.click(); a.remove();
 }
 
-function importData() {
+function executeImport() {
     const f = document.getElementById('import-file').files[0];
-    if(!f) return;
+    if(!f) return alert("Pilih file JSON dulu!");
+    
     const r = new FileReader();
     r.onload = e => {
         try {
             const j = JSON.parse(e.target.result);
-            if(confirm('Timpa data saat ini?')) {
+            if(confirm(`Ditemukan ${j.anns ? j.anns.length : 0} alarm. Timpa data saat ini?`)) {
                 // Compatibility check
                 if(j.alarms) { j.anns = j.alarms.map(x=>({id:x.id, unit:x.s, name:x.a, ind:x.m, cause:x.p, act:x.t})); delete j.alarms; }
-                db = j; saveDB(); alert('Berhasil Restore!'); location.reload();
+                db = j; 
+                saveDB(); 
+                alert('Restore Sukses!'); 
+                location.reload();
             }
-        } catch(err) { alert('File rusak'); }
+        } catch(err) { alert('Format file salah atau rusak.'); }
     };
     r.readAsText(f);
 }
 
 function resetApp() {
-    if(confirm('Hapus SEMUA data unit ini?')) {
+    if(confirm('BAHAYA: Apakah anda yakin menghapus SEMUA data di Unit ini? Data tidak bisa dikembalikan.')) {
         localStorage.removeItem(`pandu_db_${currentUnitId}`);
         localStorage.removeItem(`pandu_drive_${currentUnitId}`);
         indexedDB.deleteDatabase(`PanduGI_${currentUnitId}`);
@@ -766,11 +890,20 @@ function resetApp() {
 // UI HELPER
 function openModal(id) { 
     document.getElementById(id).style.display='flex';
-    if(id==='modal-ann') ['ann-id','ann-unit','ann-name','ann-ind','ann-cause','ann-act'].forEach(k=>document.getElementById(k).value='');
+    // Clear inputs based on ID
+    if(id==='modal-ann') ['ann-id','ann-unit','ann-name','ann-ind','ann-cause','ann-action'].forEach(k=> {
+        if(document.getElementById(k)) document.getElementById(k).value='';
+    });
     if(id==='modal-contact') ['contact-id','contact-name','contact-num'].forEach(k=>document.getElementById(k).value='');
 }
 function closeModal(id) { document.getElementById(id).style.display='none'; }
-function showToast(msg) { const t=document.getElementById('toast'); t.innerText=msg; t.style.display='block'; setTimeout(()=>t.style.display='none',3000); }
+function showToast(msg) { 
+    const t=document.getElementById('toast'); 
+    t.innerText=msg; 
+    t.style.display='block'; 
+    t.style.animation = 'slideUp 0.3s ease';
+    setTimeout(()=> { t.style.display='none'; }, 3000); 
+}
 
 </script>
 </body>
