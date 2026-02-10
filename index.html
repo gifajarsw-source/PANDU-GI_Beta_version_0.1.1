@@ -4,645 +4,499 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#2563eb">
-    <title>PANDU-GI | Smart Assistant</title>
+    <title>PANDU-GI | JARDGI System</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS VARIABLES --- */
-        :root[data-theme="light"] {
-            --primary: #2563eb; --primary-dark: #1e40af; 
-            --bg: #f8fafc; --surface: #ffffff;
-            --text-main: #0f172a; --text-sub: #64748b;
-            --border: #e2e8f0; --shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-            --card-bg: #ffffff;
-        }
-        :root[data-theme="dark"] {
-            --primary: #3b82f6; --primary-dark: #60a5fa;
-            --bg: #0f172a; --surface: #1e293b;
-            --text-main: #f1f5f9; --text-sub: #94a3b8;
-            --border: #334155; --shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
-            --card-bg: #1e293b;
-        }
-        :root { --danger: #ef4444; --success: #10b981; --purple: #8b5cf6; --orange: #f97316; }
-
+        :root[data-theme="light"] { --bg: #f8fafc; --surface: #ffffff; --text: #0f172a; --border: #e2e8f0; }
+        :root[data-theme="dark"] { --bg: #0f172a; --surface: #1e293b; --text: #f1f5f9; --border: #334155; }
+        
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 80px; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text-main); margin: 0; padding-bottom: 80px; transition: background 0.3s, color 0.3s; }
 
-        /* HEADER & NAVIGATION */
-        .header { background: var(--surface); padding: 15px 20px; position: sticky; top: 0; z-index: 100; display: none; align-items: center; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-bottom: 1px solid var(--border); transition: background 0.3s; }
-        .app-brand { font-weight: 800; font-size: 18px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
-        .btn-nav-back { background: var(--bg); border: 1px solid var(--border); color: var(--text-main); padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; }
-        .btn-nav-back:active { transform: scale(0.95); opacity: 0.8; }
-
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; min-height: 85vh; }
-
-        /* LOGIN SCREEN FIX */
-        #unit-select-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; padding: 20px; background: var(--bg); animation: fadeIn 0.5s ease; }
-        .search-brand { font-size: 32px; font-weight: 800; color: var(--primary); margin-bottom: 30px; letter-spacing: -1px; text-align: center; }
-        .search-wrapper { width: 100%; max-width: 400px; position: relative; }
-        .search-box { width: 100%; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); border-radius: 24px; display: flex; align-items: center; padding: 12px 20px; z-index: 20; position: relative; }
-        .search-input { border: none; width: 100%; font-size: 16px; font-family: inherit; color: var(--text-main); height: 24px; padding: 0; margin: 0; background: transparent; }
-        .search-results { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); margin-top: 5px; padding: 10px 0; z-index: 10; display: none; max-height: 300px; overflow-y: auto; border: 1px solid var(--border); }
-        .search-item { padding: 12px 20px; display: flex; align-items: center; gap: 15px; cursor: pointer; border-bottom: 1px solid var(--border); }
-        .search-item:last-child { border-bottom: none; }
-        .si-icon { width: 32px; height: 32px; background: var(--bg); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
-
-        /* DASHBOARD GRID */
-        .dashboard-header { margin-bottom: 25px; }
-        .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; animation: slideUp 0.4s ease; }
-        .grid-item { background: var(--card-bg); border-radius: 20px; padding: 20px 15px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: var(--shadow); border: 1px solid var(--border); transition: 0.2s; cursor: pointer; }
-        .grid-item:active { transform: scale(0.96); border-color: var(--primary); }
-        .grid-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 12px; }
-        .grid-title { font-weight: 700; font-size: 14px; color: var(--text-main); margin-bottom: 2px; }
-        .grid-desc { font-size: 11px; color: var(--text-sub); }
-
-        .ic-blue { background: #eff6ff; color: #2563eb; } 
-        .ic-green { background: #ecfdf5; color: #10b981; }
-        .ic-purple { background: #f5f3ff; color: #8b5cf6; }
-        .ic-orange { background: #fff7ed; color: #f97316; }
-        .ic-gray { background: #f1f5f9; color: #475569; }
-
-        [data-theme="dark"] .ic-blue { background: rgba(37,99,235,0.2); color: #60a5fa; }
-        [data-theme="dark"] .ic-green { background: rgba(16,185,129,0.2); color: #34d399; }
-        [data-theme="dark"] .ic-purple { background: rgba(139,92,246,0.2); color: #a78bfa; }
-        [data-theme="dark"] .ic-orange { background: rgba(249,115,22,0.2); color: #fb923c; }
-        [data-theme="dark"] .ic-gray { background: rgba(71,85,105,0.4); color: #cbd5e1; }
-
-        /* GENERAL UI */
-        .app-section { display: none; animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        .app-section.active { display: block; }
-        .card { background: var(--card-bg); border-radius: 16px; padding: 16px; margin-bottom: 15px; box-shadow: var(--shadow); border: 1px solid var(--border); }
-        .card-title { font-size: 16px; font-weight: 800; margin: 0 0 10px 0; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        .data-label { font-size: 11px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; }
-        .data-val { font-size: 14px; color: var(--text-main); white-space: pre-line; }
+        /* LOGIN SCREEN */
+        #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; padding: 20px; }
+        .logo { font-size: 32px; font-weight: 800; color: #2563eb; margin-bottom: 30px; letter-spacing: -1px; }
+        .search-box { width: 100%; max-width: 400px; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 12px 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .search-input { width: 100%; border: none; font-size: 16px; background: transparent; color: var(--text); }
+        .unit-list { width: 100%; max-width: 400px; margin-top: 10px; background: var(--surface); border-radius: 16px; border: 1px solid var(--border); display: none; max-height: 300px; overflow-y: auto; }
+        .unit-item { padding: 15px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .unit-item:active { background: #eff6ff; }
         
-        .btn { border: none; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-bottom: 10px; }
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 2px 6px rgba(37,99,235,0.2); }
-        .btn-secondary { background: var(--bg); color: var(--text-main); border: 1px solid var(--border); }
-        .btn-danger { background: rgba(239,68,68,0.1); color: var(--danger); border: 1px solid var(--danger); }
-        .btn-success { background: var(--success); color: white; }
-        .btn-purple { background: var(--purple); color: white; }
+        /* DASHBOARD */
+        #dashboard { display: none; padding: 20px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .menu-card { background: var(--surface); padding: 20px; border-radius: 16px; border: 1px solid var(--border); text-align: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .menu-card:active { transform: scale(0.98); border-color: #2563eb; }
+        .icon { font-size: 28px; margin-bottom: 10px; display: block; }
+        .title { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
+        .desc { font-size: 11px; color: #64748b; }
 
-        input, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; font-family: inherit; margin-bottom: 12px; font-size: 14px; background: var(--bg); color: var(--text-main); }
-        .search-bar { position: sticky; top: 70px; z-index: 90; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); border: 1px solid var(--primary); }
-
-        /* PDF VIEWER & MODAL */
-        .overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
-        .modal { background: var(--surface); width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; padding: 24px; max-height: 95vh; overflow-y: auto; animation: slideUp 0.3s ease; }
-        .modal.full-screen { height: 95vh; padding: 0; overflow: hidden; border-radius: 16px 16px 0 0; }
-        .pdf-modal-body { height: 100%; display: flex; flex-direction: column; }
-        .pdf-frame { flex-grow: 1; width: 100%; border: none; background: #f1f5f9; }
-        .pdf-header { padding: 10px 15px; background: var(--surface); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-
-        /* TOGGLE */
-        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border); }
-        .toggle-switch { position: relative; width: 44px; height: 24px; }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--primary); }
-        input:checked + .slider:before { transform: translateX(20px); }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        @keyframes slideIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        /* SECTIONS */
+        .section { display: none; padding: 20px; }
+        .section.active { display: block; }
         
-        #loader { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(255,255,255,0.8); backdrop-filter: blur(2px); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; color: var(--primary); }
-        .spinner { width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
-        #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 3000; pointer-events: none; }
-        .toast { background: #1e293b; color: white; padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2); animation: fadeUp 0.3s ease; display: flex; align-items: center; gap: 10px; }
-        .empty-state { text-align:center; padding: 40px 0; color: var(--text-sub); font-size: 13px; }
+        .card { background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: 12px; margin-bottom: 12px; }
+        .label { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px; display: block; }
+        .val { font-size: 14px; white-space: pre-line; margin-bottom: 8px; }
         
-        /* CLEAN CARD STYLE */
-        .clean-card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; margin-bottom: 20px; position: relative; }
-        .clean-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .clean-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-        .clean-info { flex-grow: 1; }
-        .clean-title { font-weight: 700; font-size: 15px; color: var(--text-main); line-height: 1.2; }
-        .clean-desc { font-size: 12px; color: var(--text-sub); margin-top: 3px; }
-        .clean-actions { display: grid; gap: 10px; }
-        .setting-box { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #e2e8f0; }
-        .input-group { display: flex; gap: 8px; }
-        .input-group button { width: auto; margin: 0; white-space: nowrap; padding: 0 16px; }
+        /* UTILS */
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; margin-bottom: 10px; }
+        .btn-primary { background: #2563eb; color: white; }
+        .btn-danger { background: #fee2e2; color: #ef4444; border: 1px solid #fca5a5; }
+        .btn-reset { margin-top: 30px; background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 8px 15px; border-radius: 20px; font-size: 11px; cursor: pointer; }
+        
+        input, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; background: var(--surface); color: var(--text); font-family: inherit; }
+        
+        .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: flex-end; justify-content: center; z-index: 100; }
+        .modal-content { background: var(--surface); width: 100%; max-width: 500px; padding: 20px; border-radius: 20px 20px 0 0; max-height: 90vh; overflow-y: auto; }
+        
+        .header-nav { display: none; padding: 15px 20px; background: var(--surface); border-bottom: 1px solid var(--border); justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; }
     </style>
 </head>
 <body>
 
-<div id="unit-select-screen">
-    <div class="search-brand">PANDU-<span>GI</span></div>
-    <div class="search-wrapper">
-        <div class="search-box">
-            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" id="unit-search-input" class="search-input" placeholder="Cari Gardu Induk..." autocomplete="off">
-        </div>
-        <div id="unit-search-results" class="search-results"></div>
-    </div>
-    <p style="margin-top:20px; font-size:12px; color:var(--text-sub)">Ketik nama unit atau pilih dari daftar</p>
+<div id="login-screen">
+    <div style="font-size:24px; font-weight:800; color:#2563eb; margin-bottom:20px;">PANDU-GI</div>
     
-    <button onclick="emergencyReset()" style="margin-top:40px; background:none; border:none; color:#cbd5e1; font-size:11px; cursor:pointer;">[ Reset Aplikasi / Hapus Cache ]</button>
+    <div class="search-box">
+        <input type="text" id="search-input" class="search-input" placeholder="Pilih Gardu Induk..." onclick="showList()" oninput="filterList()">
+    </div>
+    
+    <div id="unit-list" class="unit-list"></div>
+    
+    <p style="margin-top:20px; font-size:12px; color:#94a3b8">Klik kolom diatas untuk memilih</p>
+
+    <button class="btn-reset" onclick="hardReset()">↻ RESET APLIKASI (TEKAN JIKA ERROR)</button>
 </div>
 
-<div class="header">
-    <div class="app-brand">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M12 2v2"/><path d="M12 22v-2"/><path d="M2 12h2"/><path d="M22 12h-2"/></svg>
-        PANDU-GI <span style="font-size:10px; background:var(--primary); color:white; padding:2px 6px; border-radius:4px; margin-left:5px;">V2</span>
-    </div>
-    <button id="btn-back" class="btn-nav-back" onclick="goHome()">
-        <span>&larr;</span> Kembali
-    </button>
+<div id="navbar" class="header-nav">
+    <div style="font-weight:800; color:#2563eb;">PANDU-GI</div>
+    <button onclick="goHome()" style="background:#f1f5f9; border:none; padding:6px 12px; border-radius:15px; font-size:12px; font-weight:700;">&larr; Menu</button>
 </div>
 
-<div class="container" id="app-container" style="display:none;">
-
-    <div id="main-menu">
-        <div class="dashboard-header">
-            <h2 style="margin: 0; font-size: 20px; color: var(--primary);">Hallo, Petugas JARDGI</h2>
-            <p style="margin: 4px 0 0 0; color: var(--text-sub); font-size: 13px;">Unit Aktif: <b id="gi-name-display">...</b></p>
-            <div style="font-size:11px; color:var(--text-sub); margin-top:5px; cursor:pointer;" onclick="switchUnit()">[ Ganti Unit ]</div>
-        </div>
-
-        <div class="grid-menu">
-            <div class="grid-item" onclick="openSection('section-annunciator')">
-                <div class="grid-icon ic-blue">🔔</div>
-                <div class="grid-title">Annunciator</div>
-                <div class="grid-desc">Cari Alarm</div>
-            </div>
-            
-            <div class="grid-item" onclick="openSection('section-sop')">
-                <div class="grid-icon ic-green">📘</div>
-                <div class="grid-title">Buku SOP</div>
-                <div class="grid-desc">Instruksi Kerja</div>
-            </div>
-
-            <div class="grid-item" onclick="openSection('section-asset')">
-                <div class="grid-icon ic-purple">⚡</div>
-                <div class="grid-title">Data Peralatan</div>
-                <div class="grid-desc">Manual & Gambar</div>
-            </div>
-
-            <div class="grid-item" onclick="openSection('section-cloud')">
-                <div class="grid-icon ic-orange">☁️</div>
-                <div class="grid-title">Akses Database</div>
-                <div class="grid-desc">Google Drive</div>
-            </div>
-
-            <div class="grid-item" onclick="openSection('section-backup')">
-                <div class="grid-icon ic-gray">💾</div>
-                <div class="grid-title">Backup & Restore</div>
-                <div class="grid-desc">Export JSON</div>
-            </div>
-
-            <div class="grid-item" onclick="openSection('section-settings')">
-                <div class="grid-icon" style="background:#f1f5f9; color:#475569;">ℹ️</div>
-                <div class="grid-title">Tentang</div>
-                <div class="grid-desc">Aplikasi & Tema</div>
-            </div>
-        </div>
+<div id="dashboard">
+    <div style="margin-bottom:20px;">
+        <h2 style="margin:0; font-size:18px;">Hallo, Petugas JARDGI</h2>
+        <div style="font-size:12px; color:#64748b" id="active-unit-name">...</div>
     </div>
 
-    <div id="section-annunciator" class="app-section">
-        <input type="text" id="search-ann" class="search-bar" placeholder="Cari Annunciator..." oninput="renderAnnunciator()">
-        <button class="btn btn-primary" onclick="openModal('modal-ann')">+ Input Annunciator Baru</button>
-        <div id="list-ann"></div>
-    </div>
-
-    <div id="section-sop" class="app-section">
-        <div class="clean-card">
-            <div class="clean-header">
-                <div class="clean-icon ic-green">📂</div>
-                <div class="clean-info">
-                    <div class="clean-title">Buku SOP (Offline)</div>
-                    <div class="clean-desc">Simpan file PDF untuk dibaca tanpa internet</div>
-                </div>
-            </div>
-            <div class="clean-actions">
-                <input type="text" id="sop-name" placeholder="Judul Dokumen">
-                <input type="file" id="sop-file" accept="application/pdf">
-                <button class="btn btn-success" onclick="saveSOP()">Simpan PDF Offline</button>
-            </div>
+    <div class="grid">
+        <div class="menu-card" onclick="openPage('page-ann')">
+            <span class="icon">🔔</span>
+            <div class="title">Annunciator</div>
+            <div class="desc">Cari Alarm</div>
         </div>
-        <h4 style="margin:20px 0 10px 5px; color:var(--text-sub); font-size:12px; text-transform:uppercase; font-weight:700">File Tersimpan (Offline)</h4>
-        <div id="list-sop"></div>
-    </div>
-
-    <div id="section-asset" class="app-section">
-        <div class="clean-card">
-            <div class="clean-header">
-                <div class="clean-icon ic-purple">⚡</div>
-                <div class="clean-info">
-                    <div class="clean-title">Data Peralatan (Offline)</div>
-                    <div class="clean-desc">Simpan Manual & Gambar Teknik</div>
-                </div>
-            </div>
-            <div class="clean-actions">
-                <input type="text" id="asset-name" placeholder="Judul Dokumen">
-                <input type="file" id="asset-file" accept="application/pdf">
-                <button class="btn btn-purple" onclick="saveAsset()">Simpan PDF Offline</button>
-            </div>
+        <div class="menu-card" onclick="openPage('page-sop')">
+            <span class="icon">📘</span>
+            <div class="title">Buku SOP</div>
+            <div class="desc">Simpan Offline</div>
         </div>
-        <h4 style="margin:20px 0 10px 5px; color:var(--text-sub); font-size:12px; text-transform:uppercase; font-weight:700">File Tersimpan (Offline)</h4>
-        <div id="list-asset"></div>
-    </div>
-
-    <div id="section-cloud" class="app-section">
-        <div class="clean-card">
-            <div class="clean-header">
-                <div class="clean-icon ic-orange">☁️</div>
-                <div class="clean-info">
-                    <div class="clean-title">Database Gardu Induk</div>
-                    <div class="clean-desc">Akses Google Drive Utama</div>
-                </div>
-            </div>
-            <div class="clean-actions">
-                <button class="btn btn-primary" onclick="openGDrive()">Buka Folder Google Drive ↗️</button>
-            </div>
-            <div class="setting-box">
-                <label class="setting-label">Link Folder Drive</label>
-                <div class="input-group">
-                    <input type="text" id="in-gdrive-link" placeholder="Paste link..." style="margin:0">
-                    <button class="btn btn-secondary" onclick="saveGDriveLink()">Set</button>
-                </div>
-            </div>
+        <div class="menu-card" onclick="openPage('page-asset')">
+            <span class="icon">⚡</span>
+            <div class="title">Data Peralatan</div>
+            <div class="desc">Simpan Offline</div>
+        </div>
+        <div class="menu-card" onclick="openPage('page-cloud')">
+            <span class="icon">☁️</span>
+            <div class="title">Akses Database</div>
+            <div class="desc">Google Drive</div>
+        </div>
+        <div class="menu-card" onclick="openPage('page-backup')">
+            <span class="icon">💾</span>
+            <div class="title">Backup Restore</div>
+            <div class="desc">JSON Data</div>
+        </div>
+        <div class="menu-card" onclick="openPage('page-contact')">
+            <span class="icon">📞</span>
+            <div class="title">Kontak</div>
+            <div class="desc">Nomor Penting</div>
         </div>
     </div>
-
-    <div id="section-backup" class="app-section">
-        <div class="clean-card">
-            <div class="clean-header">
-                <div class="clean-icon ic-gray">💾</div>
-                <div class="clean-info">
-                    <div class="clean-title">Export Data</div>
-                    <div class="clean-desc">Simpan database aplikasi ke file JSON</div>
-                </div>
-            </div>
-            <button class="btn btn-primary" onclick="exportData()">Export Data JSON ⬇️</button>
-        </div>
-
-        <div class="clean-card">
-            <div class="clean-header">
-                <div class="clean-icon ic-gray">🔄</div>
-                <div class="clean-info">
-                    <div class="clean-title">Import Data</div>
-                    <div class="clean-desc">Kembalikan data dari file JSON</div>
-                </div>
-            </div>
-            <input type="file" id="import-file" accept=".json">
-            <button class="btn btn-success" onclick="importData(document.getElementById('import-file'))">Restore Data JSON</button>
-        </div>
-
-        <div class="clean-card" style="border-color:#fecaca; background:#fffbfc;">
-            <div class="clean-header">
-                <div class="clean-icon" style="background:#fee2e2; color:#ef4444">⚠️</div>
-                <div class="clean-info">
-                    <div class="clean-title" style="color:#ef4444">Danger Zone</div>
-                    <div class="clean-desc">Hapus seluruh data unit ini</div>
-                </div>
-            </div>
-            <button class="btn btn-danger" onclick="resetApp()">Reset Aplikasi</button>
-        </div>
-    </div>
-
-    <div id="section-settings" class="app-section">
-        <div class="card">
-            <h3 class="card-title">Tampilan</h3>
-            <div class="toggle-row">
-                <span>Mode Gelap (Dark Mode)</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="theme-toggle" onchange="toggleTheme()">
-                    <span class="slider"></span>
-                </label>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3 class="card-title">Tentang Aplikasi</h3>
-            <div style="text-align:center; padding:10px;">
-                <h4 style="margin:0; color:var(--primary);">PANDU-GI</h4>
-                <div style="font-size:12px; font-weight:700; color:var(--text-sub); margin-bottom:15px;">Pusat Bantuan Digital Unit Gardu Induk</div>
-                <p style="font-size:13px; line-height:1.6; color:var(--text-main);">
-                    "PANDU-GI hadir sebagai terobosan cerdas untuk era digitalisasi energi. Aplikasi ini dirancang untuk memastikan efisiensi operasional, kecepatan akses data, dan keandalan sistem dalam satu genggaman."
-                </p>
-                <div style="font-size:11px; color:var(--text-sub); margin-top:20px;">Versi 2.0 (Hybrid System)</div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<div id="modal-ann" class="overlay">
-    <div class="modal">
-        <h3>Form Annunciator</h3>
-        <input type="hidden" id="ann-id"> 
-        <label class="data-label">Unit / Bay</label>
-        <input type="text" id="ann-unit" placeholder="Misal: Trafo 1">
-        <label class="data-label">Nama Annunciator</label>
-        <input type="text" id="ann-name" placeholder="Judul...">
-        <label class="data-label">Indikasi</label>
-        <textarea id="ann-ind" rows="2" placeholder="Indikasi Alarm"></textarea>
-        <label class="data-label">Penyebab</label>
-        <textarea id="ann-cause" rows="2"></textarea>
-        <label class="data-label">Tindakan</label>
-        <textarea id="ann-action" rows="2"></textarea>
-        <div style="display:flex; gap:10px; margin-top:10px;">
-            <button class="btn btn-primary" onclick="saveAnnItem()">Simpan</button>
-            <button class="btn btn-secondary" onclick="closeModal('modal-ann')">Batal</button>
-        </div>
+    
+    <div style="text-align:center; margin-top:30px;">
+        <button onclick="logout()" style="background:none; border:none; color:#ef4444; font-size:12px; cursor:pointer;">[ Keluar / Ganti Unit ]</button>
     </div>
 </div>
 
-<div id="modal-viewer" class="overlay">
-    <div class="modal full-screen">
-        <div class="pdf-modal-body">
-            <div class="pdf-header">
-                <span style="font-weight:700; font-size:14px;" id="viewer-title">Dokumen</span>
-                <button style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-main);" onclick="closeModal('modal-viewer')">✕ Tutup</button>
-            </div>
-            <iframe id="pdf-frame" class="pdf-frame"></iframe>
-        </div>
+<div id="page-ann" class="section">
+    <input type="text" id="search-ann" placeholder="Cari Alarm..." oninput="renderAnn()">
+    <button class="btn btn-primary" onclick="openModal('modal-ann')">+ Tambah Alarm</button>
+    <div id="list-ann"></div>
+</div>
+
+<div id="page-sop" class="section">
+    <div class="card">
+        <div class="label">Simpan SOP (Offline)</div>
+        <input type="text" id="sop-name" placeholder="Judul SOP">
+        <input type="file" id="sop-file" accept="application/pdf">
+        <button class="btn btn-primary" onclick="saveFile('sops', 'sop-name', 'sop-file')">Simpan PDF</button>
+    </div>
+    <div id="list-sops"></div>
+</div>
+
+<div id="page-asset" class="section">
+    <div class="card">
+        <div class="label">Simpan Manual Book (Offline)</div>
+        <input type="text" id="asset-name" placeholder="Judul Dokumen">
+        <input type="file" id="asset-file" accept="application/pdf">
+        <button class="btn btn-primary" onclick="saveFile('assets', 'asset-name', 'asset-file')">Simpan PDF</button>
+    </div>
+    <div id="list-assets"></div>
+</div>
+
+<div id="page-cloud" class="section">
+    <div class="card" style="text-align:center; padding:30px;">
+        <div style="font-size:40px; margin-bottom:10px">📂</div>
+        <h3>Google Drive Utama</h3>
+        <p style="font-size:12px; color:#64748b; margin-bottom:20px;">Akses seluruh database Gardu Induk (SOP, Asset, dll).</p>
+        <button class="btn btn-primary" onclick="window.open('https://drive.google.com/drive/folders/13vT0iXCJLjer9sMS5VWI5jjchFk4ntmo?usp=sharing', '_blank')">Buka Google Drive ↗️</button>
     </div>
 </div>
 
-<div id="loader" style="display:none;"><div class="spinner"></div></div>
-<div id="toast-container"></div>
+<div id="page-backup" class="section">
+    <div class="card">
+        <h3>Export / Import</h3>
+        <button class="btn btn-primary" onclick="exportJSON()">Export Data JSON ⬇️</button>
+        <hr style="border:0; border-top:1px dashed #ddd; margin:15px 0;">
+        <div class="label">Restore Data</div>
+        <input type="file" id="json-file" accept=".json">
+        <button class="btn btn-success" onclick="importJSON()">Restore Data JSON</button>
+    </div>
+</div>
+
+<div id="page-contact" class="section">
+    <button class="btn btn-primary" onclick="openModal('modal-contact')">+ Tambah Kontak</button>
+    <div id="list-contact"></div>
+</div>
+
+<div id="modal-ann" class="modal">
+    <div class="modal-content">
+        <h3>Form Alarm</h3>
+        <input type="hidden" id="ann-id">
+        <label class="label">Unit</label><input id="ann-unit">
+        <label class="label">Nama Alarm</label><input id="ann-name">
+        <label class="label">Indikasi</label><textarea id="ann-ind"></textarea>
+        <label class="label">Penyebab</label><textarea id="ann-cause"></textarea>
+        <label class="label">Tindakan</label><textarea id="ann-act"></textarea>
+        <button class="btn btn-primary" onclick="saveAnn()">Simpan</button>
+        <button class="btn btn-danger" onclick="document.getElementById('modal-ann').style.display='none'">Batal</button>
+    </div>
+</div>
+
+<div id="modal-contact" class="modal">
+    <div class="modal-content">
+        <h3>Kontak</h3>
+        <input type="hidden" id="cont-id">
+        <label class="label">Nama</label><input id="cont-name">
+        <label class="label">Nomor HP</label><input type="tel" id="cont-num">
+        <button class="btn btn-primary" onclick="saveCont()">Simpan</button>
+        <button class="btn btn-danger" onclick="document.getElementById('modal-contact').style.display='none'">Batal</button>
+    </div>
+</div>
 
 <script>
-// CONFIG
+// --- DATA AWAL ---
 const UNITS = [
-    { id: 'fajar', name: 'GARDU INDUK 150 KV FAJAR SURYAWISESA', code: 'FJS' },
-    { id: 'gandamekar', name: 'GARDU INDUK 150 KV GANDAMEKAR', code: 'GDM' },
-    { id: 'cikarang', name: 'GARDU INDUK 150 KV CIKARANG', code: 'CKR' },
-    { id: 'jababeka', name: 'GARDU INDUK 150 KV JABABEKA', code: 'JBK' },
-    { id: 'rajapaksi', name: 'GARDU INDUK 150 KV RAJAPAKSI', code: 'RJP' },
-    { id: 'poncol', name: 'GARDU INDUK 150 KV PONCOL BARU', code: 'PCB' },
-    { id: 'tambun', name: 'GARDU INDUK 150 KV TAMBUN', code: 'TBN' },
-    { id: 'margahayu', name: 'GIS 150 KV MARGAHAYU', code: 'MGH' },
-    { id: 'new_tambun_tet', name: 'GISTET 500 KV NEW TAMBUN', code: 'NTB' },
-    { id: 'muaratawar', name: 'GITET 500 KV MUARATAWAR', code: 'MRT' },
-    { id: 'new_tambun_gis', name: 'GIS 150 KV NEW TAMBUN', code: 'NTG' }
+    "GI 150 KV FAJAR SURYAWISESA", "GI 150 KV GANDAMEKAR", "GI 150 KV CIKARANG",
+    "GI 150 KV JABABEKA", "GI 150 KV RAJAPAKSI", "GI 150 KV PONCOL BARU",
+    "GI 150 KV TAMBUN", "GIS 150 KV MARGAHAYU", "GISTET 500 KV NEW TAMBUN",
+    "GITET 500 KV MUARATAWAR", "GIS 150 KV NEW TAMBUN"
 ];
 
-const MASTER_DRIVE_LINK = "https://drive.google.com/drive/folders/13vT0iXCJLjer9sMS5VWI5jjchFk4ntmo?usp=sharing";
-
-// STATE
-let currentUnit = null;
-let db = { anns: [], contacts: [] }; 
+let db = { anns: [], conts: [] };
+let activeUnit = localStorage.getItem('pandu_unit');
 let idb;
-let driveLink = "";
 
-document.addEventListener('DOMContentLoaded', () => {
-    setupSearchEngine();
-    checkSession();
-    // Load theme
-    const theme = localStorage.getItem('pandu_theme') || 'light';
-    document.documentElement.setAttribute('data-theme', theme);
-    document.getElementById('theme-toggle').checked = (theme === 'dark');
-});
-
-// SEARCH & LOGIN
-function setupSearchEngine() {
-    const input = document.getElementById('unit-search-input');
-    const results = document.getElementById('unit-search-results');
-    const wrapper = document.querySelector('.search-box');
-    
-    // Fix: Show results on click
-    input.addEventListener('click', () => { 
-        wrapper.style.borderRadius="24px 24px 0 0"; 
-        renderSearchResults(input.value); 
-        results.style.display='block'; 
-    });
-
-    input.addEventListener('focus', () => { 
-        wrapper.style.borderRadius="24px 24px 0 0"; 
-        renderSearchResults(input.value); 
-        results.style.display='block'; 
-    });
-
-    input.addEventListener('input', (e) => { renderSearchResults(e.target.value); });
-    
-    document.addEventListener('click', (e) => { 
-        if (!e.target.closest('.search-wrapper')) { 
-            results.style.display='none'; 
-            wrapper.style.borderRadius="24px"; 
-        } 
-    });
+// --- INIT ---
+if(activeUnit) {
+    initApp(activeUnit);
+} else {
+    renderList();
 }
 
-function renderSearchResults(k) {
-    const list = document.getElementById('unit-search-results'); list.innerHTML = '';
-    const filtered = UNITS.filter(u => u.name.toLowerCase().includes(k.toLowerCase()));
-    
-    if (filtered.length === 0) {
-        list.innerHTML = `<div class="search-item" style="color:var(--text-sub);justify-content:center">Tidak ditemukan</div>`;
-        return;
-    }
-    
-    filtered.forEach(u => {
-        const div = document.createElement('div'); div.className = 'search-item';
-        div.innerHTML = `<div class="si-icon">${u.code}</div><div><div style="font-weight:600; font-size:14px; color:var(--text-main)">${u.name}</div><div style="font-size:11px;color:var(--text-sub)">Tap untuk masuk</div></div>`;
-        div.onclick = () => login(u.id); 
+function renderList() {
+    const list = document.getElementById('unit-list');
+    list.innerHTML = "";
+    UNITS.forEach(u => {
+        const div = document.createElement('div');
+        div.className = 'unit-item';
+        div.innerText = u;
+        div.onclick = () => initApp(u);
         list.appendChild(div);
     });
 }
 
-function checkSession() {
-    try {
-        const last = localStorage.getItem('pandu_active_unit');
-        if (last) login(last, false); 
-        else { showLogin(); }
-    } catch(e) { showLogin(); }
+function showList() { document.getElementById('unit-list').style.display = 'block'; }
+function filterList() {
+    const key = document.getElementById('search-input').value.toLowerCase();
+    const items = document.querySelectorAll('.unit-item');
+    items.forEach(el => {
+        el.style.display = el.innerText.toLowerCase().includes(key) ? 'flex' : 'none';
+    });
 }
 
-function showLogin() {
-    document.getElementById('unit-select-screen').style.display='flex'; 
-    document.getElementById('app-container').style.display='none'; 
-    document.querySelector('.header').style.display='none'; 
-}
-
-function emergencyReset() {
-    if(confirm("Hapus semua data aplikasi dan reset ulang?")) {
+function hardReset() {
+    if(confirm("Hapus semua data & reset aplikasi?")) {
         localStorage.clear();
-        alert("Aplikasi telah direset. Silakan reload.");
+        indexedDB.deleteDatabase("PanduGI_DB");
         location.reload();
     }
 }
 
-function login(unitId) {
-    const unit = UNITS.find(u => u.id === unitId); 
-    if(!unit) { showLogin(); return; }
+// --- LOGIC UTAMA ---
+function initApp(unitName) {
+    activeUnit = unitName;
+    localStorage.setItem('pandu_unit', unitName);
     
-    currentUnit = unit; 
-    localStorage.setItem('pandu_active_unit', unitId);
-    
-    // DB LOAD (SAFE MODE)
-    try {
-        const saved = localStorage.getItem(`pandu_db_${unitId}`);
-        if (saved) {
-            let t = JSON.parse(saved);
-            // Backward compatibility
-            if(t.alarms) { t.anns = t.alarms.map(x=>({id:x.id||Date.now(), unit:x.s, name:x.a, ind:x.m, cause:x.p, act:x.t})); delete t.alarms; }
-            db = t; if(!db.anns) db.anns=[];
-        } else {
-            db = { anns: [], contacts: [] }; 
-        }
-    } catch(e) {
-        console.error("DB Error", e);
-        db = { anns: [], contacts: [] }; // Reset if corrupt
+    // Load Text Data
+    const saved = localStorage.getItem('db_'+unitName);
+    if(saved) {
+        try { db = JSON.parse(saved); } catch(e) { db = {anns:[], conts:[]} }
+    } else {
+        db = {anns:[], conts:[]}
     }
 
-    driveLink = localStorage.getItem(`pandu_drive_${unitId}`) || MASTER_DRIVE_LINK;
-    document.getElementById('in-gdrive-link').value = driveLink;
-
-    initIndexedDB(unitId);
-    document.getElementById('header-gi-name').innerText = unit.code;
-    document.getElementById('gi-name-display').innerText = unit.name;
-    document.getElementById('unit-select-screen').style.display='none';
-    document.getElementById('app-container').style.display='block';
-    document.querySelector('.header').style.display='flex';
-    goHome(); 
-}
-
-function switchUnit() { if(confirm("Ganti unit?")) { localStorage.removeItem('pandu_active_unit'); location.reload(); } }
-function saveData() { if(!currentUnit) return; localStorage.setItem(`pandu_db_${currentUnit.id}`, JSON.stringify(db)); }
-
-// THEME
-function toggleTheme() {
-    const isDark = document.getElementById('theme-toggle').checked;
-    const theme = isDark ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('pandu_theme', theme);
-}
-
-// DRIVE LINKS
-function saveGDriveLink() {
-    const val = document.getElementById('in-gdrive-link').value;
-    localStorage.setItem(`pandu_drive_${currentUnit.id}`, val);
-    driveLink = val; showToast("Link tersimpan");
-}
-function openGDrive() {
-    if(driveLink) window.open(driveLink, '_blank');
-    else window.open(MASTER_DRIVE_LINK, '_blank');
-}
-
-// INDEXED DB & FILES
-function initIndexedDB(unitId) {
-    const req = indexedDB.open(`PanduGI_${unitId}`, 1);
-    req.onupgradeneeded = e => { const d = e.target.result; 
-        if(!d.objectStoreNames.contains('sops')) d.createObjectStore("sops",{keyPath:"id",autoIncrement:true}); 
-        if(!d.objectStoreNames.contains('assets')) d.createObjectStore("assets",{keyPath:"id",autoIncrement:true}); 
+    // Init DB File
+    const req = indexedDB.open("PanduGI_DB", 1);
+    req.onupgradeneeded = e => {
+        const d = e.target.result;
+        if(!d.objectStoreNames.contains('sops')) d.createObjectStore('sops', {keyPath:'id', autoIncrement:true});
+        if(!d.objectStoreNames.contains('assets')) d.createObjectStore('assets', {keyPath:'id', autoIncrement:true});
     };
     req.onsuccess = e => { idb = e.target.result; };
+
+    // UI Switch
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('navbar').style.display = 'flex';
+    document.getElementById('active-unit-name').innerText = unitName;
 }
 
-function saveFile(store, nameId, fileId, renderFunc) {
-    const name = document.getElementById(nameId).value; const file = document.getElementById(fileId).files[0];
-    if(!name || !file) return showToast("Lengkapi data!", true);
-    if(file.size > 15*1024*1024) return showToast("Maks 15 MB!", true);
-    
-    document.getElementById('loader').style.display = 'flex';
-    // Cek Duplikat
-    const tx = idb.transaction(store, "readonly");
-    const req = tx.objectStore(store).getAll();
-    req.onsuccess = (e) => {
-        const files = e.target.result;
-        const exists = files.find(f => f.name.toLowerCase() === name.toLowerCase());
-        
-        if (exists) {
-            if(!confirm(`File "${name}" sudah ada. Timpa (Overwrite)?`)) {
-                document.getElementById('loader').style.display = 'none'; return;
-            }
-            const delTx = idb.transaction(store, "readwrite");
-            delTx.objectStore(store).delete(exists.id);
-        }
-        
-        const reader = new FileReader();
-        reader.onload = e => {
-            try {
-                const wTx = idb.transaction(store, "readwrite");
-                wTx.objectStore(store).add({ name: name, blob: new Blob([e.target.result], {type: 'application/pdf'}), date: new Date().toLocaleDateString() });
-                wTx.oncomplete = () => { document.getElementById('loader').style.display = 'none'; showToast("Tersimpan Offline!"); document.getElementById(nameId).value=""; document.getElementById(fileId).value=""; renderFunc(); };
-                wTx.onerror = () => { document.getElementById('loader').style.display = 'none'; showToast("Gagal (Memori Penuh?)", true); };
-            } catch(err) { document.getElementById('loader').style.display = 'none'; showToast("Error Sistem", true); }
-        };
-        reader.readAsArrayBuffer(file);
+function goHome() {
+    document.querySelectorAll('.section').forEach(e => e.classList.remove('active'));
+    document.getElementById('dashboard').style.display = 'block';
+}
+
+function openPage(id) {
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById(id).classList.add('active');
+    if(id==='page-ann') renderAnn();
+    if(id==='page-contact') renderCont();
+    if(id==='page-sop') renderFiles('sops', 'list-sops');
+    if(id==='page-asset') renderFiles('assets', 'list-assets');
+}
+
+function logout() {
+    if(confirm("Keluar dari unit ini?")) {
+        localStorage.removeItem('pandu_unit');
+        location.reload();
+    }
+}
+
+function openModal(id) {
+    document.getElementById(id).style.display = 'flex';
+    // Clear inputs
+    const inputs = document.getElementById(id).querySelectorAll('input, textarea');
+    inputs.forEach(i => i.value = '');
+}
+
+// --- CRUD ANNUNCIATOR ---
+function saveAnn() {
+    const item = {
+        id: document.getElementById('ann-id').value || Date.now(),
+        unit: document.getElementById('ann-unit').value,
+        name: document.getElementById('ann-name').value,
+        ind: document.getElementById('ann-ind').value,
+        cause: document.getElementById('ann-cause').value,
+        act: document.getElementById('ann-act').value
     };
+    if(!item.name) return alert("Nama wajib diisi");
+    
+    const idx = db.anns.findIndex(x => x.id == item.id);
+    if(idx > -1) db.anns[idx] = item; else db.anns.unshift(item);
+    
+    saveLocal();
+    document.getElementById('modal-ann').style.display = 'none';
+    renderAnn();
 }
 
-function renderFile(store, listId, delFunc) {
-    const list = document.getElementById(listId); list.innerHTML = "<div class='spinner' style='width:20px;height:20px;margin:10px auto'></div>";
-    if(!idb) { setTimeout(() => renderFile(store, listId, delFunc), 500); return; }
-    const tx = idb.transaction(store, "readonly");
-    tx.objectStore(store).getAll().onsuccess = e => {
-        const res = e.target.result; res.sort((a,b)=>b.id-a.id);
-        list.innerHTML = res.length ? "" : "<div class='empty-state'>Belum ada file offline.</div>";
-        res.forEach(f => {
-            list.innerHTML += `<div class="card" style="display:flex;justify-content:space-between;align-items:center; padding:12px;"><div style="overflow:hidden;padding-right:10px"><div class="data-val" style="margin:0;font-weight:700">${f.name}</div><div class="data-label" style="font-size:10px;margin-top:2px">${f.date}</div></div><div style="display:flex;gap:5px"><button class="btn btn-secondary" style="margin:0;padding:6px 10px; width:auto;" onclick="openFile('${store}',${f.id}, '${f.name}')">Buka</button><button class="btn btn-danger" style="margin:0;padding:6px 10px; width:auto;" onclick="${delFunc}(${f.id})">✕</button></div></div>`;
+function renderAnn() {
+    const list = document.getElementById('list-ann');
+    const key = document.getElementById('search-ann').value.toLowerCase();
+    list.innerHTML = '';
+    
+    db.anns.filter(x => (x.name+x.ind+x.cause).toLowerCase().includes(key)).forEach(x => {
+        list.innerHTML += `
+            <div class="card">
+                <div style="display:flex; justify-content:space-between">
+                    <div class="label">${x.unit}</div>
+                    <div>
+                        <button onclick="editAnn(${x.id})">✏️</button>
+                        <button onclick="delAnn(${x.id})">🗑️</button>
+                    </div>
+                </div>
+                <div style="font-weight:800; color:#2563eb; margin-bottom:10px">${x.name}</div>
+                <div class="label">Indikasi</div><div class="val">${x.ind}</div>
+                <div class="label">Penyebab</div><div class="val">${x.cause}</div>
+                <div class="label">Tindakan</div><div class="val">${x.act}</div>
+            </div>
+        `;
+    });
+}
+
+function editAnn(id) {
+    const item = db.anns.find(x => x.id == id);
+    document.getElementById('ann-id').value = item.id;
+    document.getElementById('ann-unit').value = item.unit;
+    document.getElementById('ann-name').value = item.name;
+    document.getElementById('ann-ind').value = item.ind;
+    document.getElementById('ann-cause').value = item.cause;
+    document.getElementById('ann-act').value = item.act;
+    document.getElementById('modal-ann').style.display = 'flex';
+}
+
+function delAnn(id) {
+    if(confirm("Hapus?")) {
+        db.anns = db.anns.filter(x => x.id != id);
+        saveLocal(); renderAnn();
+    }
+}
+
+// --- CRUD CONTACT ---
+function saveCont() {
+    const item = {
+        id: Date.now(),
+        name: document.getElementById('cont-name').value,
+        num: document.getElementById('cont-num').value
+    };
+    if(!item.name) return;
+    db.conts.push(item);
+    saveLocal();
+    document.getElementById('modal-contact').style.display = 'none';
+    renderCont();
+}
+
+function renderCont() {
+    const list = document.getElementById('list-contact');
+    list.innerHTML = '';
+    db.conts.forEach(x => {
+        list.innerHTML += `
+            <div class="card" style="display:flex; justify-content:space-between; align-items:center">
+                <div>
+                    <div style="font-weight:700">${x.name}</div>
+                    <a href="tel:${x.num}" style="color:#2563eb">${x.num}</a>
+                </div>
+                <button onclick="delCont(${x.id})" style="background:#fee2e2; border:none; padding:5px 10px; border-radius:5px">X</button>
+            </div>
+        `;
+    });
+}
+
+function delCont(id) {
+    db.conts = db.conts.filter(x => x.id != id);
+    saveLocal(); renderCont();
+}
+
+// --- FILE SYSTEM (SIMPLIFIED) ---
+function saveFile(store, nameId, fileId) {
+    const name = document.getElementById(nameId).value;
+    const file = document.getElementById(fileId).files[0];
+    if(!name || !file) return alert("Data kurang lengkap");
+    
+    const reader = new FileReader();
+    reader.onload = e => {
+        const tx = idb.transaction(store, 'readwrite');
+        tx.objectStore(store).add({
+            name: name,
+            blob: new Blob([e.target.result], {type: 'application/pdf'}),
+            unit: activeUnit,
+            date: new Date().toLocaleDateString()
+        });
+        tx.oncomplete = () => { alert("Tersimpan!"); document.getElementById(nameId).value=''; };
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+function renderFiles(store, listId) {
+    if(!idb) return setTimeout(()=>renderFiles(store, listId), 500);
+    const list = document.getElementById(listId);
+    list.innerHTML = "Loading...";
+    
+    const tx = idb.transaction(store, 'readonly');
+    const req = tx.objectStore(store).getAll();
+    
+    req.onsuccess = e => {
+        list.innerHTML = "";
+        const files = e.target.result.filter(x => x.unit === activeUnit);
+        if(files.length === 0) list.innerHTML = "Belum ada file.";
+        
+        files.forEach(f => {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center">
+                    <div><b>${f.name}</b><br><small>${f.date}</small></div>
+                    <div>
+                        <button onclick="openPdf('${store}', ${f.id})">Buka</button>
+                        <button onclick="delPdf('${store}', ${f.id})">Hapus</button>
+                    </div>
+                </div>
+            `;
+            list.appendChild(div);
         });
     };
 }
 
-function openFile(store, id, name) {
-    document.getElementById('loader').style.display = 'flex';
-    idb.transaction(store, "readonly").objectStore(store).get(id).onsuccess = e => {
-        document.getElementById('loader').style.display = 'none';
-        if(e.target.result) {
-            const url = URL.createObjectURL(e.target.result.blob);
-            document.getElementById('viewer-title').innerText = name;
-            document.getElementById('pdf-frame').src = url;
-            document.getElementById('modal-viewer').style.display = 'flex';
-        } else showToast("Gagal buka", true);
+function openPdf(store, id) {
+    const tx = idb.transaction(store, 'readonly');
+    tx.objectStore(store).get(id).onsuccess = e => {
+        const file = e.target.result;
+        const url = URL.createObjectURL(file.blob);
+        // Buka di tab baru (Native PDF Viewer HP)
+        window.open(url, '_blank');
     };
 }
 
-function delFile(store, id, renderFunc) {
-    if(confirm("Hapus file offline ini?")) { idb.transaction(store, "readwrite").objectStore(store).delete(id).onsuccess = () => renderFunc(); }
-}
-function saveSOP() { saveFile('sops', 'sop-name', 'sop-file', renderSOP); } function renderSOP() { renderFile('sops', 'list-sop', 'delSOP'); } function delSOP(id) { delFile('sops', id, renderSOP); }
-function saveAsset() { saveFile('assets', 'asset-name', 'asset-file', renderAsset); } function renderAsset() { renderFile('assets', 'list-asset', 'delAsset'); } function delAsset(id) { delFile('assets', id, renderAsset); }
-
-// UTILS
-function showToast(msg, isError=false) {
-    const c = document.getElementById('toast-container'); const e = document.createElement('div'); e.className = `toast ${isError?'error':''}`; e.innerText = msg;
-    c.appendChild(e); setTimeout(() => { e.style.opacity='0'; setTimeout(()=>e.remove(),300); }, 3000);
-}
-function toggleLoader(show) { document.getElementById('loader').style.display = show ? 'flex' : 'none'; }
-function goHome() { document.querySelectorAll('.app-section').forEach(e=>e.classList.remove('active')); document.getElementById('main-menu').style.display='block'; document.getElementById('btn-back').style.display='none'; }
-function openSection(id) { 
-    document.getElementById('main-menu').style.display='none'; document.getElementById(id).classList.add('active'); document.getElementById('btn-back').style.display='flex'; 
-    if(id==='section-annunciator') renderAnnunciator(); 
-    if(id==='section-sop') renderSOP();
-    if(id==='section-asset') renderAsset();
+function delPdf(store, id) {
+    if(confirm("Hapus file?")) {
+        const tx = idb.transaction(store, 'readwrite');
+        tx.objectStore(store).delete(id).oncomplete = () => {
+            if(store === 'sops') renderFiles('sops', 'list-sops');
+            else renderFiles('assets', 'list-assets');
+        };
+    }
 }
 
-// DATA LOGIC
-function renderAnnunciator() {
-    const list = document.getElementById('list-ann'); const k = document.getElementById('search-ann').value.toLowerCase(); list.innerHTML = "";
-    const f = db.anns.filter(x => (x.unit+" "+x.name+" "+x.ind+" "+x.cause+" "+x.act).toLowerCase().includes(k));
-    if(f.length===0) return list.innerHTML = "<div class='empty-state'>Tidak ada data.</div>";
-    f.forEach(i => {
-        list.innerHTML += `<div class="card"><div class="action-group"><button class="icon-btn" onclick="editAnn('${i.id}')">✏️</button><button class="icon-btn" onclick="delAnn('${i.id}')" style="color:var(--danger)">🗑️</button></div><div class="badge">${i.unit}</div><div class="card-title">${i.name}</div><div class="data-row"><div class="data-label">Indikasi</div><div class="data-val">${i.ind||'-'}</div></div><div class="data-row"><div class="data-label">Penyebab</div><div class="data-val">${i.cause||'-'}</div></div><div class="data-row"><div class="data-label">Tindakan</div><div class="data-val">${i.act||'-'}</div></div></div>`;
-    });
+// --- UTILS ---
+function saveLocal() {
+    localStorage.setItem('db_'+activeUnit, JSON.stringify(db));
 }
-function saveAnnItem() {
-    const id = document.getElementById('ann-id').value;
-    const item = { id: id||Date.now().toString(), unit: document.getElementById('ann-unit').value, name: document.getElementById('ann-name').value, ind: document.getElementById('ann-ind').value, cause: document.getElementById('ann-cause').value, act: document.getElementById('ann-action').value };
-    if(!item.unit || !item.name) return showToast("Lengkapi data!", true);
-    if(id) { const i = db.anns.findIndex(x=>x.id==id); if(i!==-1) db.anns[i]=item; } else db.anns.unshift(item);
-    saveData(); closeModal('modal-ann'); renderAnnunciator(); showToast("Tersimpan!");
-}
-function editAnn(id) {
-    const i = db.anns.find(x=>x.id==id); if(!i) return;
-    document.getElementById('ann-id').value=i.id; document.getElementById('ann-unit').value=i.unit; document.getElementById('ann-name').value=i.name; document.getElementById('ann-ind').value=i.ind; document.getElementById('ann-cause').value=i.cause; document.getElementById('ann-action').value=i.act;
-    openModal('modal-ann');
-}
-function delAnn(id) { if(confirm("Hapus?")) { db.anns = db.anns.filter(x=>x.id!=id); saveData(); renderAnnunciator(); } }
 
-function exportData() { const s=JSON.stringify(db,null,2); const b=new Blob([s],{type:"application/json"}); const u=URL.createObjectURL(b); const a=document.createElement('a'); a.href=u; a.download=`BACKUP_${currentUnit.code}.json`; document.body.appendChild(a); a.click(); a.remove(); }
-function importData(inp) { const f=inp.files[0]; if(!f) return; const r=new FileReader(); r.onload=e=>{ try { const j=JSON.parse(e.target.result); if(confirm(`Timpa data?`)) { if(j.alarms) { j.anns=j.alarms.map(x=>({id:x.id,unit:x.s,name:x.a,ind:x.m,cause:x.p,act:x.t})); delete j.alarms; } db=j; saveData(); location.reload(); } } catch(e){showToast("File rusak",true);} }; r.readAsText(f); }
-function resetApp() { if(confirm("RESET TOTAL?")) { localStorage.removeItem(`pandu_db_${currentUnit.id}`); localStorage.removeItem(`pandu_drive_${currentUnit.id}`); indexedDB.deleteDatabase(`PanduGI_${currentUnit.id}`).onsuccess=()=>location.reload(); } }
+function exportJSON() {
+    const str = JSON.stringify(db);
+    const blob = new Blob([str], {type: "application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `DATA_${activeUnit}.json`;
+    document.body.appendChild(a);
+    a.click();
+}
 
-function openModal(id) { document.getElementById(id).style.display='flex'; if(id==='modal-ann') ['ann-id','ann-unit','ann-name','ann-ind','ann-cause','ann-action'].forEach(k=>document.getElementById(k).value=""); }
-function closeModal(id) { document.getElementById(id).style.display='none'; }
-window.onclick = e => { if(e.target.classList.contains('overlay')) e.target.style.display="none"; }
+function importJSON() {
+    const file = document.getElementById('json-file').files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        try {
+            db = JSON.parse(e.target.result);
+            saveLocal();
+            alert("Data berhasil dimuat!");
+            location.reload();
+        } catch(err) { alert("File rusak"); }
+    };
+    reader.readAsText(file);
+}
 </script>
 </body>
 </html>
