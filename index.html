@@ -7,7 +7,7 @@
     <title>PANDU-GI | Smart Assistant</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS VARIABLES (THEMING) --- */
+        /* --- CSS VARIABLES --- */
         :root[data-theme="light"] {
             --primary: #2563eb; --primary-dark: #1e40af; 
             --bg: #f8fafc; --surface: #ffffff;
@@ -15,7 +15,6 @@
             --border: #e2e8f0; --shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
             --card-bg: #ffffff;
         }
-        
         :root[data-theme="dark"] {
             --primary: #3b82f6; --primary-dark: #60a5fa;
             --bg: #0f172a; --surface: #1e293b;
@@ -23,10 +22,7 @@
             --border: #334155; --shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
             --card-bg: #1e293b;
         }
-
-        :root {
-            --danger: #ef4444; --success: #10b981; --purple: #8b5cf6; --orange: #f97316;
-        }
+        :root { --danger: #ef4444; --success: #10b981; --purple: #8b5cf6; --orange: #f97316; }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text-main); margin: 0; padding-bottom: 80px; transition: background 0.3s, color 0.3s; }
@@ -34,33 +30,27 @@
         /* HEADER & NAVIGATION */
         .header { background: var(--surface); padding: 15px 20px; position: sticky; top: 0; z-index: 100; display: none; align-items: center; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-bottom: 1px solid var(--border); transition: background 0.3s; }
         .app-brand { font-weight: 800; font-size: 18px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
-        
-        .btn-nav-back { 
-            background: var(--bg); border: 1px solid var(--border); 
-            color: var(--text-main); padding: 8px 14px; border-radius: 20px; 
-            font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px;
-        }
+        .btn-nav-back { background: var(--bg); border: 1px solid var(--border); color: var(--text-main); padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; }
         .btn-nav-back:active { transform: scale(0.95); opacity: 0.8; }
 
         .container { max-width: 600px; margin: 0 auto; padding: 20px; min-height: 85vh; }
 
-        /* LOGIN SCREEN */
+        /* LOGIN SCREEN FIX */
         #unit-select-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; padding: 20px; background: var(--bg); animation: fadeIn 0.5s ease; }
         .search-brand { font-size: 32px; font-weight: 800; color: var(--primary); margin-bottom: 30px; letter-spacing: -1px; text-align: center; }
         .search-wrapper { width: 100%; max-width: 400px; position: relative; }
-        .search-box { width: 100%; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); border-radius: 24px; display: flex; align-items: center; padding: 12px 20px; }
+        .search-box { width: 100%; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); border-radius: 24px; display: flex; align-items: center; padding: 12px 20px; z-index: 20; position: relative; }
         .search-input { border: none; width: 100%; font-size: 16px; font-family: inherit; color: var(--text-main); height: 24px; padding: 0; margin: 0; background: transparent; }
         .search-results { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); margin-top: 5px; padding: 10px 0; z-index: 10; display: none; max-height: 300px; overflow-y: auto; border: 1px solid var(--border); }
         .search-item { padding: 12px 20px; display: flex; align-items: center; gap: 15px; cursor: pointer; border-bottom: 1px solid var(--border); }
         .search-item:last-child { border-bottom: none; }
         .si-icon { width: 32px; height: 32px; background: var(--bg); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
 
-        /* DASHBOARD GRID MENU */
+        /* DASHBOARD GRID */
         .dashboard-header { margin-bottom: 25px; }
         .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; animation: slideUp 0.4s ease; }
         .grid-item { background: var(--card-bg); border-radius: 20px; padding: 20px 15px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: var(--shadow); border: 1px solid var(--border); transition: 0.2s; cursor: pointer; }
         .grid-item:active { transform: scale(0.96); border-color: var(--primary); }
-        
         .grid-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 12px; }
         .grid-title { font-weight: 700; font-size: 14px; color: var(--text-main); margin-bottom: 2px; }
         .grid-desc { font-size: 11px; color: var(--text-sub); }
@@ -77,29 +67,33 @@
         [data-theme="dark"] .ic-orange { background: rgba(249,115,22,0.2); color: #fb923c; }
         [data-theme="dark"] .ic-gray { background: rgba(71,85,105,0.4); color: #cbd5e1; }
 
-        /* SECTIONS & CARDS */
+        /* GENERAL UI */
         .app-section { display: none; animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .app-section.active { display: block; }
         .card { background: var(--card-bg); border-radius: 16px; padding: 16px; margin-bottom: 15px; box-shadow: var(--shadow); border: 1px solid var(--border); }
         .card-title { font-size: 16px; font-weight: 800; margin: 0 0 10px 0; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        
-        .data-row { margin-bottom: 8px; }
         .data-label { font-size: 11px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; }
         .data-val { font-size: 14px; color: var(--text-main); white-space: pre-line; }
-
-        /* INPUTS & BUTTONS */
-        input, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; font-family: inherit; margin-bottom: 12px; font-size: 14px; background: var(--bg); color: var(--text-main); }
+        
         .btn { border: none; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-bottom: 10px; }
-        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 2px 6px rgba(37,99,235,0.2); }
         .btn-secondary { background: var(--bg); color: var(--text-main); border: 1px solid var(--border); }
         .btn-danger { background: rgba(239,68,68,0.1); color: var(--danger); border: 1px solid var(--danger); }
-        
-        /* PDF VIEWER */
+        .btn-success { background: var(--success); color: white; }
+        .btn-purple { background: var(--purple); color: white; }
+
+        input, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; font-family: inherit; margin-bottom: 12px; font-size: 14px; background: var(--bg); color: var(--text-main); }
+        .search-bar { position: sticky; top: 70px; z-index: 90; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); border: 1px solid var(--primary); }
+
+        /* PDF VIEWER & MODAL */
+        .overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
+        .modal { background: var(--surface); width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; padding: 24px; max-height: 95vh; overflow-y: auto; animation: slideUp 0.3s ease; }
+        .modal.full-screen { height: 95vh; padding: 0; overflow: hidden; border-radius: 16px 16px 0 0; }
         .pdf-modal-body { height: 100%; display: flex; flex-direction: column; }
         .pdf-frame { flex-grow: 1; width: 100%; border: none; background: #f1f5f9; }
         .pdf-header { padding: 10px 15px; background: var(--surface); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
 
-        /* SETTINGS & TOGGLES */
+        /* TOGGLE */
         .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border); }
         .toggle-switch { position: relative; width: 44px; height: 24px; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
@@ -108,15 +102,28 @@
         input:checked + .slider { background-color: var(--primary); }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        /* MODAL */
-        .overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
-        .modal { background: var(--surface); width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; padding: 24px; max-height: 95vh; overflow-y: auto; animation: slideUp 0.3s ease; }
-        .modal.full-screen { height: 95vh; padding: 0; overflow: hidden; border-radius: 16px 16px 0 0; }
-
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         @keyframes slideIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-        @media (min-width: 600px) { .overlay { align-items: center; padding: 20px; } .modal { border-radius: 20px; max-height: 85vh; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        #loader { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(255,255,255,0.8); backdrop-filter: blur(2px); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; color: var(--primary); }
+        .spinner { width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 3000; pointer-events: none; }
+        .toast { background: #1e293b; color: white; padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2); animation: fadeUp 0.3s ease; display: flex; align-items: center; gap: 10px; }
+        .empty-state { text-align:center; padding: 40px 0; color: var(--text-sub); font-size: 13px; }
+        
+        /* CLEAN CARD STYLE */
+        .clean-card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; margin-bottom: 20px; position: relative; }
+        .clean-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .clean-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .clean-info { flex-grow: 1; }
+        .clean-title { font-weight: 700; font-size: 15px; color: var(--text-main); line-height: 1.2; }
+        .clean-desc { font-size: 12px; color: var(--text-sub); margin-top: 3px; }
+        .clean-actions { display: grid; gap: 10px; }
+        .setting-box { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #e2e8f0; }
+        .input-group { display: flex; gap: 8px; }
+        .input-group button { width: auto; margin: 0; white-space: nowrap; padding: 0 16px; }
     </style>
 </head>
 <body>
@@ -131,6 +138,8 @@
         <div id="unit-search-results" class="search-results"></div>
     </div>
     <p style="margin-top:20px; font-size:12px; color:var(--text-sub)">Ketik nama unit atau pilih dari daftar</p>
+    
+    <button onclick="emergencyReset()" style="margin-top:40px; background:none; border:none; color:#cbd5e1; font-size:11px; cursor:pointer;">[ Reset Aplikasi / Hapus Cache ]</button>
 </div>
 
 <div class="header">
@@ -198,64 +207,98 @@
     </div>
 
     <div id="section-sop" class="app-section">
-        <div class="card">
-            <h3 class="card-title">Simpan SOP Offline</h3>
-            <p style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">Upload file PDF agar bisa dibaca tanpa internet.</p>
-            <input type="text" id="sop-name" placeholder="Judul Dokumen">
-            <input type="file" id="sop-file" accept="application/pdf">
-            <button class="btn btn-success" onclick="saveSOP()">Simpan PDF</button>
+        <div class="clean-card">
+            <div class="clean-header">
+                <div class="clean-icon ic-green">📂</div>
+                <div class="clean-info">
+                    <div class="clean-title">Buku SOP (Offline)</div>
+                    <div class="clean-desc">Simpan file PDF untuk dibaca tanpa internet</div>
+                </div>
+            </div>
+            <div class="clean-actions">
+                <input type="text" id="sop-name" placeholder="Judul Dokumen">
+                <input type="file" id="sop-file" accept="application/pdf">
+                <button class="btn btn-success" onclick="saveSOP()">Simpan PDF Offline</button>
+            </div>
         </div>
-        <h4 style="margin:20px 0 10px 5px; color:var(--text-sub); font-size:12px; text-transform:uppercase;">Daftar SOP Tersimpan</h4>
+        <h4 style="margin:20px 0 10px 5px; color:var(--text-sub); font-size:12px; text-transform:uppercase; font-weight:700">File Tersimpan (Offline)</h4>
         <div id="list-sop"></div>
     </div>
 
     <div id="section-asset" class="app-section">
-        <div class="card">
-            <h3 class="card-title">Simpan Data Peralatan</h3>
-            <p style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">Upload Manual Book/Gambar Teknik (PDF).</p>
-            <input type="text" id="asset-name" placeholder="Judul Dokumen">
-            <input type="file" id="asset-file" accept="application/pdf">
-            <button class="btn btn-purple" onclick="saveAsset()">Simpan PDF</button>
+        <div class="clean-card">
+            <div class="clean-header">
+                <div class="clean-icon ic-purple">⚡</div>
+                <div class="clean-info">
+                    <div class="clean-title">Data Peralatan (Offline)</div>
+                    <div class="clean-desc">Simpan Manual & Gambar Teknik</div>
+                </div>
+            </div>
+            <div class="clean-actions">
+                <input type="text" id="asset-name" placeholder="Judul Dokumen">
+                <input type="file" id="asset-file" accept="application/pdf">
+                <button class="btn btn-purple" onclick="saveAsset()">Simpan PDF Offline</button>
+            </div>
         </div>
-        <h4 style="margin:20px 0 10px 5px; color:var(--text-sub); font-size:12px; text-transform:uppercase;">File Tersimpan</h4>
+        <h4 style="margin:20px 0 10px 5px; color:var(--text-sub); font-size:12px; text-transform:uppercase; font-weight:700">File Tersimpan (Offline)</h4>
         <div id="list-asset"></div>
     </div>
 
     <div id="section-cloud" class="app-section">
-        <div class="card">
-            <div style="text-align:center; padding:20px;">
-                <div style="font-size:48px; margin-bottom:10px;">📂</div>
-                <h3 style="margin:0; color:var(--text-main)">Google Drive Utama</h3>
-                <p style="color:var(--text-sub); font-size:13px; margin:5px 0 20px 0;">Pusat penyimpanan seluruh data Gardu Induk.</p>
-                <button class="btn btn-primary" onclick="openGDrive()">Buka Folder Drive ↗️</button>
+        <div class="clean-card">
+            <div class="clean-header">
+                <div class="clean-icon ic-orange">☁️</div>
+                <div class="clean-info">
+                    <div class="clean-title">Database Gardu Induk</div>
+                    <div class="clean-desc">Akses Google Drive Utama</div>
+                </div>
             </div>
-            
-            <div style="border-top:1px solid var(--border); padding-top:15px; margin-top:15px;">
-                <label class="data-label">Link Folder Drive</label>
-                <div style="display:flex; gap:5px;">
+            <div class="clean-actions">
+                <button class="btn btn-primary" onclick="openGDrive()">Buka Folder Google Drive ↗️</button>
+            </div>
+            <div class="setting-box">
+                <label class="setting-label">Link Folder Drive</label>
+                <div class="input-group">
                     <input type="text" id="in-gdrive-link" placeholder="Paste link..." style="margin:0">
-                    <button class="btn btn-secondary" onclick="saveGDriveLink()" style="width:auto; margin:0">Set</button>
+                    <button class="btn btn-secondary" onclick="saveGDriveLink()">Set</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="section-backup" class="app-section">
-        <div class="card">
-            <h3 class="card-title">Export & Import</h3>
-            <p style="font-size:12px; color:var(--text-sub);">Amankan data aplikasi ke format JSON.</p>
-            <button class="btn btn-primary" onclick="exportData()">Export Data JSON ⬇️</button>
-            
-            <div style="margin-top:20px; padding-top:15px; border-top:1px dashed var(--border);">
-                <label class="data-label">Restore Data</label>
-                <input type="file" id="import-file" accept=".json">
-                <button class="btn btn-success" onclick="importData(document.getElementById('import-file'))">Restore Data JSON</button>
+        <div class="clean-card">
+            <div class="clean-header">
+                <div class="clean-icon ic-gray">💾</div>
+                <div class="clean-info">
+                    <div class="clean-title">Export Data</div>
+                    <div class="clean-desc">Simpan database aplikasi ke file JSON</div>
+                </div>
             </div>
+            <button class="btn btn-primary" onclick="exportData()">Export Data JSON ⬇️</button>
         </div>
-        
-        <div class="card" style="border-color:var(--danger); background:rgba(239,68,68,0.05);">
-            <h3 class="card-title" style="color:var(--danger)">Danger Zone</h3>
-            <button class="btn btn-danger" onclick="resetApp()">Reset / Hapus Data Unit Ini</button>
+
+        <div class="clean-card">
+            <div class="clean-header">
+                <div class="clean-icon ic-gray">🔄</div>
+                <div class="clean-info">
+                    <div class="clean-title">Import Data</div>
+                    <div class="clean-desc">Kembalikan data dari file JSON</div>
+                </div>
+            </div>
+            <input type="file" id="import-file" accept=".json">
+            <button class="btn btn-success" onclick="importData(document.getElementById('import-file'))">Restore Data JSON</button>
+        </div>
+
+        <div class="clean-card" style="border-color:#fecaca; background:#fffbfc;">
+            <div class="clean-header">
+                <div class="clean-icon" style="background:#fee2e2; color:#ef4444">⚠️</div>
+                <div class="clean-info">
+                    <div class="clean-title" style="color:#ef4444">Danger Zone</div>
+                    <div class="clean-desc">Hapus seluruh data unit ini</div>
+                </div>
+            </div>
+            <button class="btn btn-danger" onclick="resetApp()">Reset Aplikasi</button>
         </div>
     </div>
 
@@ -360,35 +403,91 @@ function setupSearchEngine() {
     const input = document.getElementById('unit-search-input');
     const results = document.getElementById('unit-search-results');
     const wrapper = document.querySelector('.search-box');
-    input.addEventListener('focus', () => { wrapper.style.borderRadius="24px 24px 0 0"; renderSearchResults(input.value); results.style.display='block'; });
+    
+    // Fix: Show results on click
+    input.addEventListener('click', () => { 
+        wrapper.style.borderRadius="24px 24px 0 0"; 
+        renderSearchResults(input.value); 
+        results.style.display='block'; 
+    });
+
+    input.addEventListener('focus', () => { 
+        wrapper.style.borderRadius="24px 24px 0 0"; 
+        renderSearchResults(input.value); 
+        results.style.display='block'; 
+    });
+
     input.addEventListener('input', (e) => { renderSearchResults(e.target.value); });
-    document.addEventListener('click', (e) => { if (!e.target.closest('.search-wrapper')) { results.style.display='none'; wrapper.style.borderRadius="24px"; } });
+    
+    document.addEventListener('click', (e) => { 
+        if (!e.target.closest('.search-wrapper')) { 
+            results.style.display='none'; 
+            wrapper.style.borderRadius="24px"; 
+        } 
+    });
 }
+
 function renderSearchResults(k) {
     const list = document.getElementById('unit-search-results'); list.innerHTML = '';
     const filtered = UNITS.filter(u => u.name.toLowerCase().includes(k.toLowerCase()));
-    if (filtered.length === 0) return list.innerHTML = `<div class="search-item" style="color:var(--text-sub);justify-content:center">Tidak ditemukan</div>`;
+    
+    if (filtered.length === 0) {
+        list.innerHTML = `<div class="search-item" style="color:var(--text-sub);justify-content:center">Tidak ditemukan</div>`;
+        return;
+    }
+    
     filtered.forEach(u => {
         const div = document.createElement('div'); div.className = 'search-item';
         div.innerHTML = `<div class="si-icon">${u.code}</div><div><div style="font-weight:600; font-size:14px; color:var(--text-main)">${u.name}</div><div style="font-size:11px;color:var(--text-sub)">Tap untuk masuk</div></div>`;
-        div.onclick = () => login(u.id); list.appendChild(div);
+        div.onclick = () => login(u.id); 
+        list.appendChild(div);
     });
 }
+
 function checkSession() {
-    const last = localStorage.getItem('pandu_active_unit');
-    if (last) login(last, false); else { document.getElementById('unit-select-screen').style.display='flex'; document.getElementById('app-container').style.display='none'; document.querySelector('.header').style.display='none'; }
+    try {
+        const last = localStorage.getItem('pandu_active_unit');
+        if (last) login(last, false); 
+        else { showLogin(); }
+    } catch(e) { showLogin(); }
 }
+
+function showLogin() {
+    document.getElementById('unit-select-screen').style.display='flex'; 
+    document.getElementById('app-container').style.display='none'; 
+    document.querySelector('.header').style.display='none'; 
+}
+
+function emergencyReset() {
+    if(confirm("Hapus semua data aplikasi dan reset ulang?")) {
+        localStorage.clear();
+        alert("Aplikasi telah direset. Silakan reload.");
+        location.reload();
+    }
+}
+
 function login(unitId) {
-    const unit = UNITS.find(u => u.id === unitId); if(!unit) return;
-    currentUnit = unit; localStorage.setItem('pandu_active_unit', unitId);
+    const unit = UNITS.find(u => u.id === unitId); 
+    if(!unit) { showLogin(); return; }
     
-    // DB LOAD
-    const saved = localStorage.getItem(`pandu_db_${unitId}`);
-    if (saved) {
-        let t = JSON.parse(saved);
-        if(t.alarms) { t.anns = t.alarms.map(x=>({id:x.id||Date.now(), unit:x.s, name:x.a, ind:x.m, cause:x.p, act:x.t})); delete t.alarms; }
-        db = t; if(!db.anns) db.anns=[];
-    } else db = { anns: [], contacts: [] };
+    currentUnit = unit; 
+    localStorage.setItem('pandu_active_unit', unitId);
+    
+    // DB LOAD (SAFE MODE)
+    try {
+        const saved = localStorage.getItem(`pandu_db_${unitId}`);
+        if (saved) {
+            let t = JSON.parse(saved);
+            // Backward compatibility
+            if(t.alarms) { t.anns = t.alarms.map(x=>({id:x.id||Date.now(), unit:x.s, name:x.a, ind:x.m, cause:x.p, act:x.t})); delete t.alarms; }
+            db = t; if(!db.anns) db.anns=[];
+        } else {
+            db = { anns: [], contacts: [] }; 
+        }
+    } catch(e) {
+        console.error("DB Error", e);
+        db = { anns: [], contacts: [] }; // Reset if corrupt
+    }
 
     driveLink = localStorage.getItem(`pandu_drive_${unitId}`) || MASTER_DRIVE_LINK;
     document.getElementById('in-gdrive-link').value = driveLink;
@@ -401,6 +500,7 @@ function login(unitId) {
     document.querySelector('.header').style.display='flex';
     goHome(); 
 }
+
 function switchUnit() { if(confirm("Ganti unit?")) { localStorage.removeItem('pandu_active_unit'); location.reload(); } }
 function saveData() { if(!currentUnit) return; localStorage.setItem(`pandu_db_${currentUnit.id}`, JSON.stringify(db)); }
 
