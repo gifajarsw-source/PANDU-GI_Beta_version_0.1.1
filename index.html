@@ -2,30 +2,33 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#ffffff">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>PANDU-GI Mobile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <title>PANDU-GI | Pro</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. MODERN VARIABLES & RESET --- */
+        /* --- 1. MODERN COLOR PALETTE (Sesuai Logo) --- */
         :root {
-            --primary: #2563eb;
-            --primary-light: #eff6ff;
-            --text-dark: #0f172a;
-            --text-grey: #64748b;
-            --bg-body: #f8fafc;
+            /* Warna diambil dari Logo */
+            --brand-dark: #0f172a;   /* Navy Gelap */
+            --brand-teal: #0d9488;   /* Teal/Hijau Tosca Logo */
+            --brand-gold: #fbbf24;   /* Aksen Gold/Kuning Logo */
+            
+            /* Warna UI */
+            --bg-body: #f1f5f9;
             --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
             --border: #e2e8f0;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
-            --radius-lg: 24px;
-            --radius-md: 16px;
-            --safe-area-top: env(safe-area-inset-top);
-            --safe-area-bottom: env(safe-area-inset-bottom);
+            
+            /* Shadow Halus */
+            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+            
+            /* Status Colors */
+            --danger: #ef4444; 
+            --success: #10b981;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -33,425 +36,341 @@
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg-body);
-            color: var(--text-dark);
+            color: var(--text-main);
             margin: 0;
             padding: 0;
-            padding-bottom: calc(20px + var(--safe-area-bottom));
-            overscroll-behavior-y: none; /* Prevent bounce effect */
+            padding-bottom: 80px;
         }
 
-        /* --- 2. COMPONENTS --- */
-        
-        /* Buttons */
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: var(--radius-md);
-            border: none;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
+        /* --- 2. HEADER DESIGN (Sesuai Request) --- */
+        .top-bar {
+            background-color: var(--brand-dark);
+            color: white;
+            padding: 15px 20px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: transform 0.1s;
-        }
-        .btn:active { transform: scale(0.98); opacity: 0.9; }
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
-        .btn-secondary { background: white; color: var(--text-dark); border: 1px solid var(--border); }
-        .btn-danger { background: #fef2f2; color: #ef4444; border: 1px solid #fee2e2; }
-        .btn-success { background: #10b981; color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
-        
-        /* Inputs */
-        input, textarea, select {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            font-family: inherit;
-            font-size: 14px;
-            background: var(--surface);
-            color: var(--text-dark);
-            margin-bottom: 12px;
-            transition: border-color 0.2s;
-        }
-        input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
-
-        /* Header (Glassmorphism) */
-        .header {
+            justify-content: space-between;
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 12px 20px;
-            padding-top: calc(12px + var(--safe-area-top));
-            display: none; /* Hidden on login */
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .app-logo { font-weight: 800; font-size: 18px; color: var(--primary); letter-spacing: -0.5px; }
-        .btn-back {
-            background: var(--primary-light);
-            color: var(--primary);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 12px;
-        }
-
-        /* Container */
-        .main-container {
-            padding: 20px;
-            max-width: 600px; /* Limit width on tablets */
-            margin: 0 auto;
-            min-height: 80vh;
-        }
-
-        /* --- 3. LOGIN SCREEN --- */
-        #login-screen {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 30px;
+        
+        .top-bar-title { font-weight: 700; font-size: 18px; letter-spacing: 0.5px; }
+        
+        /* Logo Circle di Kanan Atas */
+        .header-logo-circle {
+            width: 36px; height: 36px;
             background: white;
-        }
-        .login-hero {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .login-title { font-size: 28px; font-weight: 800; color: var(--primary); margin: 0; }
-        .login-subtitle { font-size: 14px; color: var(--text-grey); margin-top: 5px; }
-        
-        .search-wrapper { position: relative; margin-bottom: 15px; }
-        .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-grey); }
-        .search-box-login { padding-left: 45px; border-radius: 50px; background: var(--bg-body); border: none; font-size: 15px; }
-        .unit-list { 
-            max-height: 40vh; 
-            overflow-y: auto; 
-            display: none; /* Hidden initially */
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-        }
-        .unit-item {
-            padding: 15px;
-            border-bottom: 1px solid var(--border);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .unit-item:last-child { border-bottom: none; }
-        .unit-item:active { background: var(--primary-light); color: var(--primary); }
-
-        /* --- 4. DASHBOARD (GRID) --- */
-        .dashboard-header { margin-bottom: 25px; }
-        .user-greeting { font-size: 20px; font-weight: 800; color: var(--text-dark); margin: 0; }
-        .active-unit { font-size: 13px; color: var(--text-grey); display: flex; align-items: center; gap: 5px; margin-top: 4px; }
-        
-        .grid-menu {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* 2 Column */
-            gap: 15px;
-        }
-        .menu-item {
-            background: white;
-            padding: 20px 15px;
-            border-radius: var(--radius-lg);
-            text-align: center;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border);
-            transition: transform 0.1s;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 140px;
-        }
-        .menu-item:active { transform: scale(0.96); border-color: var(--primary); }
-        
-        .menu-icon {
-            width: 50px; height: 50px;
-            border-radius: 16px;
+            border-radius: 50%;
+            overflow: hidden;
             display: flex; align-items: center; justify-content: center;
-            font-size: 24px;
-            margin-bottom: 12px;
+            border: 2px solid var(--brand-gold);
         }
-        .mi-blue { background: #eff6ff; color: #2563eb; }
-        .mi-green { background: #ecfdf5; color: #10b981; }
-        .mi-purple { background: #f5f3ff; color: #8b5cf6; }
-        .mi-orange { background: #fff7ed; color: #f97316; }
-        .mi-gray { background: #f1f5f9; color: #64748b; }
+        .header-logo-circle img { width: 100%; height: 100%; object-fit: cover; }
 
-        .menu-label { font-weight: 700; font-size: 14px; color: var(--text-dark); line-height: 1.2; }
-        .menu-sub { font-size: 11px; color: var(--text-grey); margin-top: 4px; }
-
-        /* --- 5. CONTENT SECTIONS --- */
-        .section { display: none; animation: slideUp 0.3s ease-out; }
-        .section.active { display: block; }
-
-        /* Clean Card Style */
-        .clean-card {
-            background: white;
-            border-radius: var(--radius-md);
-            padding: 20px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border);
-            margin-bottom: 15px;
+        /* Sub-Header Putih */
+        .sub-header {
+            background: var(--surface);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-        .card-header-row { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .card-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-        .card-texts h3 { margin: 0; font-size: 15px; font-weight: 700; }
-        .card-texts p { margin: 2px 0 0; font-size: 12px; color: var(--text-grey); }
+        
+        .brand-row { display: flex; align-items: center; gap: 8px; font-weight: 800; color: var(--brand-teal); font-size: 16px; }
+        .unit-badge {
+            background: #eff6ff; color: var(--brand-dark);
+            font-size: 10px; font-weight: 700;
+            padding: 4px 8px; border-radius: 6px;
+            border: 1px solid #dbeafe;
+            text-transform: uppercase;
+        }
 
-        /* Data Item */
-        .data-item {
-            padding: 15px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            margin-bottom: 10px;
-            background: white;
-        }
-        .data-label { font-size: 10px; font-weight: 700; color: var(--text-grey); text-transform: uppercase; margin-bottom: 2px; }
-        .data-value { font-size: 14px; color: var(--text-dark); margin-bottom: 8px; line-height: 1.5; white-space: pre-line; }
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; min-height: 85vh; }
 
-        /* --- 6. MODALS & UTILS --- */
-        .overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            display: none;
-            align-items: flex-end; /* Bottom sheet style */
+        /* --- 3. DASHBOARD MENU (Sesuai Gambar) --- */
+        .greeting-area { margin-bottom: 25px; }
+        .greeting-title { font-size: 20px; font-weight: 700; color: var(--text-main); margin: 0; }
+        .greeting-sub { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
-        .modal {
-            background: white;
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            border-radius: 24px 24px 0 0;
-            padding: 25px;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: slideUpModal 0.3s ease;
-        }
-        .modal.fullscreen {
-            height: 95vh;
-            border-radius: 16px 16px 0 0;
-            padding: 0;
+
+        .menu-card {
+            background: var(--surface);
+            border-radius: 20px; /* Rounded besar sesuai gambar */
+            padding: 24px 16px;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            border: 1px solid transparent;
+            transition: transform 0.15s, border-color 0.15s;
+            cursor: pointer;
+            height: 160px; /* Tinggi seragam */
+            justify-content: center;
         }
-        .modal-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
-        }
-        .modal-title { font-size: 18px; font-weight: 800; }
-
-        /* PDF Viewer */
-        .pdf-container { flex: 1; width: 100%; height: 100%; background: #eee; }
-        .pdf-header { padding: 12px 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: white; }
-
-        /* Loader & Toast */
-        #loader { position: fixed; inset: 0; background: rgba(255,255,255,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; flex-direction: column; }
-        .spinner { width: 40px; height: 40px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 10px; }
         
-        #toast { 
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); 
-            background: #1e293b; color: white; padding: 12px 20px; border-radius: 50px; 
-            font-size: 13px; font-weight: 600; box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
-            z-index: 3000; display: none; animation: fadeUp 0.3s ease;
+        .menu-card:active { transform: scale(0.97); border-color: var(--brand-teal); }
+
+        /* Icon dengan Background Halus */
+        .icon-box {
+            width: 56px; height: 56px;
+            border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px;
+            margin-bottom: 16px;
+        }
+        
+        .ic-blue { background: #eff6ff; color: #2563eb; }
+        .ic-purple { background: #f5f3ff; color: #8b5cf6; }
+        .ic-green { background: #ecfdf5; color: #10b981; }
+        .ic-orange { background: #fff7ed; color: #f97316; }
+        .ic-gray { background: #f8fafc; color: #475569; }
+
+        .menu-name { font-weight: 700; font-size: 14px; color: var(--text-main); line-height: 1.2; }
+        .menu-info { font-size: 11px; color: var(--text-sub); margin-top: 4px; }
+
+        /* Menu Lebar (Full Width) */
+        .menu-full {
+            grid-column: span 2;
+            flex-direction: row;
+            justify-content: flex-start;
+            padding: 20px;
+            height: auto;
+            text-align: left;
+            gap: 16px;
+        }
+        .menu-full .icon-box { margin-bottom: 0; width: 48px; height: 48px; font-size: 22px; }
+
+        /* --- 4. SECTION & FORM STYLES --- */
+        .app-section { display: none; animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .app-section.active { display: block; }
+
+        /* Card List Data */
+        .data-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+        .data-title { font-weight: 700; font-size: 15px; color: var(--text-main); margin-bottom: 5px; }
+        .data-badge { 
+            display: inline-block; padding: 3px 8px; border-radius: 6px; 
+            background: #eff6ff; color: var(--brand-teal); 
+            font-size: 10px; font-weight: 700; margin-bottom: 8px; 
+        }
+        .data-row { margin-top: 8px; }
+        .lbl { font-size: 10px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; }
+        .val { font-size: 13px; color: var(--text-main); white-space: pre-line; }
+
+        /* Input & Button Modern */
+        input, textarea, select {
+            width: 100%; padding: 14px; border: 1px solid var(--border);
+            border-radius: 12px; font-family: inherit; font-size: 14px;
+            background: #fff; margin-bottom: 12px; transition: 0.2s;
+        }
+        input:focus, textarea:focus { border-color: var(--brand-teal); outline: none; }
+
+        .btn {
+            width: 100%; padding: 14px; border: none; border-radius: 12px;
+            font-weight: 700; font-size: 14px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-bottom: 10px; transition: 0.2s;
+        }
+        .btn:active { transform: scale(0.98); opacity: 0.9; }
+        .btn-primary { background: var(--brand-teal); color: white; }
+        .btn-secondary { background: white; border: 1px solid var(--border); color: var(--text-main); }
+        .btn-danger { background: #fee2e2; color: #ef4444; }
+        
+        .delete-btn {
+            position: absolute; top: 15px; right: 15px;
+            background: #fff1f2; color: #ef4444; border:none;
+            width: 28px; height: 28px; border-radius: 8px;
+            display:flex; align-items:center; justify-content:center;
+            cursor: pointer;
         }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideUpModal { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes fadeUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+        /* --- 5. MODAL & PDF VIEWER --- */
+        .overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
+        .modal { background: var(--surface); width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; padding: 24px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
+        .modal.full { height: 95vh; padding: 0; display: flex; flex-direction: column; }
+        
+        .pdf-header { padding: 12px 20px; background: white; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .pdf-frame { flex: 1; width: 100%; border: none; background: #eee; }
 
+        /* Login Screen */
+        #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; padding: 20px; text-align: center; }
+        .login-logo { width: 100px; height: 100px; margin-bottom: 20px; border-radius: 20px; box-shadow: var(--shadow-card); object-fit: contain; }
+        .search-login-box { width: 100%; padding: 15px; border-radius: 30px; border: 1px solid var(--border); background: white; box-shadow: var(--shadow-card); text-align: center; }
+        .unit-list { margin-top: 15px; width: 100%; background: white; border-radius: 16px; border: 1px solid var(--border); max-height: 300px; overflow-y: auto; display: none; text-align: left; }
+        .unit-item { padding: 15px; border-bottom: 1px solid var(--border); cursor: pointer; font-size: 14px; font-weight: 500; }
+        .unit-item:active { background: #f0fdfa; color: var(--brand-teal); }
+
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        /* Utils */
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 10px 20px; border-radius: 50px; font-size: 13px; z-index: 3000; display: none; }
+        #loader { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(255,255,255,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; flex-direction: column; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top-color: var(--brand-teal); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 10px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        @media (min-width: 600px) { .overlay { align-items: center; padding: 20px; } .modal { border-radius: 20px; max-height: 85vh; } }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <div class="login-hero">
-            <div style="font-size:40px; margin-bottom:10px;">⚡</div>
-            <h1 class="login-title">PANDU-GI</h1>
-            <p class="login-subtitle">Pusat Bantuan Digital Unit Gardu Induk</p>
-        </div>
+        <img src="logo.jpeg" class="login-logo" onerror="this.style.display='none'" alt="Logo PANDU-GI">
+        
+        <h1 style="margin:0; color:var(--brand-dark); font-size:28px;">PANDU-GI</h1>
+        <p style="margin:5px 0 30px 0; color:var(--text-sub);">Pusat Bantuan Digital Unit Gardu Induk</p>
+        
+        <input type="text" id="login-search" class="search-login-box" placeholder="🔍 Pilih Gardu Induk..." readonly onclick="toggleUnitList()">
+        
+        <div id="unit-list" class="unit-list"></div>
+        
+        <button onclick="hardReset()" style="margin-top:40px; background:none; border:none; color:#cbd5e1; font-size:11px; cursor:pointer;">[ Reset Aplikasi ]</button>
+    </div>
 
-        <div class="search-wrapper">
-            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input type="text" id="unit-search" class="search-box-login" placeholder="Pilih Gardu Induk..." readonly onclick="toggleUnitList()">
-        </div>
-
-        <div id="unit-list" class="unit-list">
+    <div id="app-header" style="display: none;">
+        <div class="top-bar">
+            <div class="top-bar-title">PANDU-GI</div>
+            <div class="header-logo-circle">
+                <img src="logo.jpeg" onerror="this.style.display='none'">
             </div>
-
-        <div style="text-align: center; margin-top: 40px;">
-            <button onclick="hardReset()" style="background: none; border: none; font-size: 11px; color: #94a3b8; cursor: pointer; text-decoration: underline;">
-                ↻ Reset Aplikasi jika Error
-            </button>
+        </div>
+        
+        <div class="sub-header">
+            <div style="flex-grow:1; display:flex; align-items:center; gap:8px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+                <span class="brand-row">PANDU-GI</span>
+                <span class="unit-badge" id="header-unit-name">...</span>
+            </div>
+            <button id="nav-back-btn" onclick="goHome()" style="display:none; background:#f1f5f9; border:none; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:700; color:var(--text-sub); cursor:pointer;">&larr; Menu</button>
         </div>
     </div>
 
-    <header class="header" id="main-header">
-        <div class="app-brand">PANDU-GI</div>
-        <button class="btn-back" onclick="goHome()">Menu Utama</button>
-    </header>
-
-    <div class="main-container" id="main-app" style="display: none;">
+    <div class="container" id="app-container" style="display: none;">
         
-        <div id="dashboard">
-            <div class="dashboard-header">
-                <h2 class="user-greeting">Hallo, Petugas JARDGI</h2>
-                <div class="active-unit">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    <span id="display-unit-name">...</span>
-                </div>
-                <div style="margin-top:8px; font-size:11px; color:var(--primary); font-weight:600; cursor:pointer;" onclick="logout()">[ Ganti Unit ]</div>
+        <div id="main-menu">
+            <div class="greeting-area">
+                <h2 class="greeting-title">Selamat Bertugas</h2>
+                <div class="greeting-sub">Unit: <b id="dashboard-unit-name">...</b></div>
+                <div style="font-size:11px; color:var(--brand-teal); margin-top:5px; cursor:pointer;" onclick="logout()">[ Ganti Lokasi ]</div>
             </div>
 
-            <div class="grid-menu">
-                <div class="menu-item" onclick="openSection('section-ann')">
-                    <div class="menu-icon mi-blue">🔔</div>
-                    <div class="menu-label">Annunciator</div>
-                    <div class="menu-sub">Cari Alarm</div>
-                </div>
-                
-                <div class="menu-item" onclick="openSection('section-sop')">
-                    <div class="menu-icon mi-green">📘</div>
-                    <div class="menu-label">Buku SOP</div>
-                    <div class="menu-sub">Dokumen Offline</div>
+            <div class="menu-grid">
+                <div class="menu-card" onclick="openSection('section-annunciator')">
+                    <div class="icon-box ic-blue">🔔</div>
+                    <div class="menu-name">Cari Alarm</div>
+                    <div class="menu-info">Data Annunciator</div>
                 </div>
 
-                <div class="menu-item" onclick="openSection('section-asset')">
-                    <div class="menu-icon mi-purple">⚡</div>
-                    <div class="menu-label">Data Peralatan</div>
-                    <div class="menu-sub">Dokumen Offline</div>
+                <div class="menu-card" onclick="openSection('section-asset')">
+                    <div class="icon-box ic-purple">🖥️</div>
+                    <div class="menu-name">Data Peralatan</div>
+                    <div class="menu-info">Spesifikasi Asset</div>
                 </div>
 
-                <div class="menu-item" onclick="openSection('section-db')">
-                    <div class="menu-icon mi-orange">☁️</div>
-                    <div class="menu-label">Akses Database</div>
-                    <div class="menu-sub">Google Drive</div>
+                <div class="menu-card" onclick="openSection('section-sop')">
+                    <div class="icon-box ic-green">📄</div>
+                    <div class="menu-name">SOP</div>
+                    <div class="menu-info">Manual Book PDF</div>
                 </div>
 
-                <div class="menu-item" onclick="openSection('section-backup')">
-                    <div class="menu-icon mi-gray">💾</div>
-                    <div class="menu-label">Backup & Restore</div>
-                    <div class="menu-sub">Data JSON</div>
+                <div class="menu-card" onclick="openSection('section-contact')">
+                    <div class="icon-box ic-orange">📞</div>
+                    <div class="menu-name">Kontak</div>
+                    <div class="menu-info">Nomor Darurat</div>
                 </div>
 
-                <div class="menu-item" onclick="openSection('section-about')">
-                    <div class="menu-icon" style="background:#f1f5f9; color:#475569;">ℹ️</div>
-                    <div class="menu-label">Tentang</div>
-                    <div class="menu-sub">Info Aplikasi</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="section-ann" class="section">
-            <h2 class="card-title">Database Annunciator</h2>
-            <input type="text" id="search-ann" placeholder="Ketik nama alarm / indikasi..." oninput="renderAnn()">
-            <button class="btn btn-primary" onclick="openModal('modal-ann')">+ Input Alarm Baru</button>
-            <div id="list-ann" style="margin-top:15px;"></div>
-        </div>
-
-        <div id="section-sop" class="section">
-            <div class="clean-card">
-                <div class="card-header-row">
-                    <div class="card-icon mi-green">📂</div>
-                    <div class="card-texts">
-                        <h3>Simpan SOP (Offline)</h3>
-                        <p>Upload file PDF agar bisa dibuka tanpa internet.</p>
+                <div class="menu-card menu-full" onclick="openSection('section-database')">
+                    <div class="icon-box ic-gray">☁️</div>
+                    <div class="menu-text">
+                        <div class="menu-name">Akses Database</div>
+                        <div class="menu-info">Google Drive & Backup</div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div id="section-annunciator" class="app-section">
+            <div style="position:sticky; top:0; background:var(--bg-body); padding-bottom:10px; z-index:10;">
+                <input type="text" id="search-ann" placeholder="Cari nama alarm / indikasi..." oninput="renderAnnunciator()" style="box-shadow:var(--shadow-card); border-color:transparent;">
+                <button class="btn btn-primary" onclick="openModal('modal-ann')">+ Input Alarm Baru</button>
+            </div>
+            <div id="list-ann"></div>
+        </div>
+
+        <div id="section-sop" class="app-section">
+            <div class="data-card" style="border-top: 4px solid var(--success);">
+                <div class="data-title">Simpan SOP Offline</div>
+                <p style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">Upload file PDF agar bisa dibaca saat tidak ada sinyal.</p>
                 <input type="text" id="sop-name" placeholder="Judul SOP">
                 <input type="file" id="sop-file" accept="application/pdf">
-                <button class="btn btn-success" onclick="saveFile('sops', 'sop-name', 'sop-file')">Simpan PDF</button>
+                <button class="btn btn-success" onclick="saveSOP()">Simpan ke Aplikasi</button>
             </div>
-            <div style="font-size:12px; font-weight:700; color:var(--text-grey); margin-bottom:10px;">DAFTAR SOP TERSIMPAN</div>
-            <div id="list-sops"></div>
+            <div style="font-size:11px; font-weight:700; color:var(--text-sub); margin-bottom:10px; letter-spacing:0.5px;">DAFTAR SOP TERSIMPAN</div>
+            <div id="list-sop"></div>
         </div>
 
-        <div id="section-asset" class="section">
-            <div class="clean-card">
-                <div class="card-header-row">
-                    <div class="card-icon mi-purple">⚡</div>
-                    <div class="card-texts">
-                        <h3>Data Peralatan (Offline)</h3>
-                        <p>Simpan manual book / gambar teknik.</p>
-                    </div>
-                </div>
+        <div id="section-asset" class="app-section">
+            <div class="data-card" style="border-top: 4px solid var(--purple);">
+                <div class="data-title">Simpan Data Peralatan</div>
+                <p style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">Upload Manual Book / Gambar Teknik (PDF).</p>
                 <input type="text" id="asset-name" placeholder="Judul Dokumen">
                 <input type="file" id="asset-file" accept="application/pdf">
-                <button class="btn btn-primary" onclick="saveFile('assets', 'asset-name', 'asset-file')">Simpan PDF</button>
+                <button class="btn btn-primary" style="background:var(--purple);" onclick="saveAsset()">Simpan ke Aplikasi</button>
             </div>
-            <div style="font-size:12px; font-weight:700; color:var(--text-grey); margin-bottom:10px;">FILE TERSIMPAN</div>
-            <div id="list-assets"></div>
+            <div style="font-size:11px; font-weight:700; color:var(--text-sub); margin-bottom:10px; letter-spacing:0.5px;">FILE TERSIMPAN</div>
+            <div id="list-asset"></div>
         </div>
 
-        <div id="section-db" class="section">
-            <div class="clean-card" style="text-align:center; padding:30px 20px;">
-                <div style="font-size:48px; margin-bottom:15px;">☁️</div>
-                <h3 style="margin:0 0 10px 0;">Google Drive Utama</h3>
-                <p style="margin:0 0 20px 0; color:var(--text-grey); font-size:13px;">
-                    Akses pusat penyimpanan data cloud untuk mendownload atau melihat file secara online.
-                </p>
-                <button class="btn btn-primary" onclick="openDrive()">Buka Folder Drive ↗️</button>
-            </div>
-            
-            <div class="clean-card">
-                <div class="data-label">Pengaturan Link Drive</div>
-                <div style="display:flex; gap:8px; margin-top:5px;">
-                    <input type="text" id="drive-link-input" placeholder="Paste link folder..." style="margin:0;">
-                    <button class="btn btn-secondary" onclick="saveDriveLink()" style="width:auto; margin:0;">Simpan</button>
+        <div id="section-database" class="app-section">
+            <div class="data-card" style="text-align:center; padding:30px 20px;">
+                <div style="font-size:40px; margin-bottom:10px;">☁️</div>
+                <h3 style="margin:0; font-size:18px;">Google Drive Utama</h3>
+                <p style="font-size:12px; color:var(--text-sub); margin:5px 0 20px 0;">Pusat seluruh data online (SOP, Asset, Laporan).</p>
+                <button class="btn btn-primary" onclick="openGDrive()">Buka Folder Drive ↗️</button>
+                
+                <div style="margin-top:15px; padding-top:15px; border-top:1px dashed var(--border); text-align:left;">
+                    <label class="lbl">Link Folder</label>
+                    <div style="display:flex; gap:5px;">
+                        <input type="text" id="in-gdrive-link" placeholder="Paste link..." style="margin:0">
+                        <button class="btn btn-secondary" onclick="saveGDriveLink()" style="width:auto; margin:0">Set</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div id="section-backup" class="section">
-            <div class="clean-card">
-                <div class="card-header-row">
-                    <div class="card-icon mi-gray">⬇️</div>
-                    <div class="card-texts"><h3>Export Data</h3><p>Simpan data aplikasi ke format JSON</p></div>
+            <div class="data-card">
+                <div class="data-title">Backup & Restore</div>
+                <p style="font-size:12px; color:var(--text-sub); margin-bottom:15px;">Amankan data aplikasi (Alarm & Kontak) ke format JSON.</p>
+                
+                <button class="btn btn-secondary" onclick="exportData()">⬇️ Export Data JSON</button>
+                
+                <div style="margin-top:15px; padding-top:15px; border-top:1px dashed var(--border);">
+                    <label class="lbl">Restore Data</label>
+                    <input type="file" id="import-file" accept=".json">
+                    <button class="btn btn-success" onclick="importData(document.getElementById('import-file'))">Restore JSON</button>
                 </div>
-                <button class="btn btn-primary" onclick="exportData()">Download JSON</button>
             </div>
 
-            <div class="clean-card">
-                <div class="card-header-row">
-                    <div class="card-icon mi-gray">⬆️</div>
-                    <div class="card-texts"><h3>Restore Data</h3><p>Kembalikan data dari file JSON</p></div>
-                </div>
-                <input type="file" id="import-file" accept=".json">
-                <button class="btn btn-success" onclick="importData()">Restore JSON</button>
-            </div>
-
-            <button class="btn btn-danger" onclick="resetUnitData()" style="margin-top:20px;">Hapus Data Unit Ini</button>
+            <button class="btn btn-danger" onclick="resetApp()" style="margin-top:20px;">⚠️ Reset Data Unit Ini</button>
         </div>
 
-        <div id="section-about" class="section">
-            <div class="clean-card">
-                <h3>Tentang PANDU-GI</h3>
-                <p style="font-size:14px; line-height:1.6; color:var(--text-dark);">
-                    "PANDU-GI (Pusat Bantuan Digital Unit Gardu Induk) hadir sebagai terobosan cerdas untuk era digitalisasi energi. Aplikasi ini dirancang untuk memastikan efisiensi operasional, kecepatan akses data, dan keandalan sistem dalam satu genggaman."
-                </p>
-                <div style="margin-top:20px; font-size:12px; color:var(--text-grey);">Versi 2.0 (Mobile Hybrid)</div>
-            </div>
-            
-            <button class="btn btn-primary" onclick="openSection('section-contact-list')">Buka Menu Kontak</button>
-        </div>
-
-        <div id="section-contact-list" class="section">
-            <h2 class="card-title">Daftar Kontak</h2>
+        <div id="section-contact" class="app-section">
             <button class="btn btn-primary" onclick="openModal('modal-contact')">+ Tambah Kontak</button>
             <div id="list-contact" style="margin-top:15px;"></div>
         </div>
@@ -460,48 +379,46 @@
 
     <div id="modal-ann" class="overlay">
         <div class="modal">
-            <div class="modal-header">
-                <div class="modal-title">Form Alarm</div>
-                <button onclick="closeModal('modal-ann')" style="border:none; bg:none; font-size:20px;">✕</button>
-            </div>
+            <h3 style="margin-top:0">Form Alarm</h3>
             <input type="hidden" id="ann-id">
-            <label class="data-label">Unit / Bay</label><input id="ann-unit">
-            <label class="data-label">Nama Alarm</label><input id="ann-name">
-            <label class="data-label">Indikasi</label><textarea id="ann-ind"></textarea>
-            <label class="data-label">Penyebab</label><textarea id="ann-cause"></textarea>
-            <label class="data-label">Tindakan</label><textarea id="ann-act"></textarea>
-            <button class="btn btn-primary" onclick="saveAnn()">Simpan</button>
+            <label class="lbl">Unit / Bay</label><input id="ann-unit">
+            <label class="lbl">Nama Alarm</label><input id="ann-name">
+            <label class="lbl">Indikasi</label><textarea id="ann-ind" rows="2"></textarea>
+            <label class="lbl">Penyebab</label><textarea id="ann-cause" rows="2"></textarea>
+            <label class="lbl">Tindakan</label><textarea id="ann-action" rows="2"></textarea>
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button class="btn btn-primary" onclick="saveAnnItem()">Simpan</button>
+                <button class="btn btn-secondary" onclick="closeModal('modal-ann')">Tutup</button>
+            </div>
         </div>
     </div>
 
     <div id="modal-contact" class="overlay">
         <div class="modal">
-            <div class="modal-header">
-                <div class="modal-title">Data Kontak</div>
-                <button onclick="closeModal('modal-contact')" style="border:none; bg:none; font-size:20px;">✕</button>
-            </div>
-            <input type="hidden" id="cont-id">
-            <label class="data-label">Nama</label><input id="cont-name">
-            <label class="data-label">Nomor HP</label><input type="tel" id="cont-num">
-            <button class="btn btn-primary" onclick="saveCont()">Simpan</button>
+            <h3 style="margin-top:0">Data Kontak</h3>
+            <input type="hidden" id="contact-id">
+            <label class="lbl">Nama</label><input id="contact-name">
+            <label class="lbl">No. Telepon</label><input type="tel" id="contact-num">
+            <button class="btn btn-primary" onclick="saveContactItem()">Simpan</button>
+            <button class="btn btn-secondary" style="margin-top:10px" onclick="closeModal('modal-contact')">Batal</button>
         </div>
     </div>
 
     <div id="modal-pdf" class="overlay">
-        <div class="modal fullscreen">
+        <div class="modal full">
             <div class="pdf-header">
                 <b id="pdf-title">Dokumen</b>
-                <button onclick="closeModal('modal-pdf')" style="background:none; border:none; font-weight:700; color:var(--primary);">Tutup ✕</button>
+                <button onclick="closeModal('modal-pdf')" style="background:none; border:none; font-weight:700; color:var(--text-main);">Tutup ✕</button>
             </div>
-            <iframe id="pdf-frame" class="pdf-container"></iframe>
+            <iframe id="pdf-frame" class="pdf-frame"></iframe>
         </div>
     </div>
 
-    <div id="loader"><div class="spinner"></div><div style="font-size:12px; font-weight:700;">Memproses...</div></div>
+    <div id="loader"><div class="spinner"></div><div>Memproses...</div></div>
     <div id="toast">Berhasil disimpan!</div>
 
 <script>
-// --- KONFIGURASI DATA ---
+// --- DATA AWAL ---
 const UNITS = [
     { id: 'fajar', name: 'GI 150 KV FAJAR SURYAWISESA' },
     { id: 'gandamekar', name: 'GI 150 KV GANDAMEKAR' },
@@ -516,85 +433,96 @@ const UNITS = [
     { id: 'new_tambun_gis', name: 'GIS 150 KV NEW TAMBUN' }
 ];
 
-const DEFAULT_DRIVE = "https://drive.google.com/drive/folders/13vT0iXCJLjer9sMS5VWI5jjchFk4ntmo?usp=sharing";
+const MASTER_LINK = "https://drive.google.com/drive/folders/13vT0iXCJLjer9sMS5VWI5jjchFk4ntmo?usp=sharing";
 
 // VARIABLES
 let currentUnitId = null;
-let db = { anns: [], contacts: [] }; // Data Teks
-let idb = null; // IndexedDB untuk File
+let db = { anns: [], contacts: [] };
+let idb;
+let driveLink = "";
 
 // --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
-    checkLogin();
+    initAppSequence();
 });
 
-// --- LOGIN SYSTEM ---
-function checkLogin() {
+function initAppSequence() {
     const savedId = localStorage.getItem('pandu_active_unit');
     if (savedId) {
-        enterApp(savedId);
+        login(savedId);
     } else {
-        renderUnitList();
+        showLoginScreen();
     }
 }
 
-function renderUnitList() {
+// --- LOGIN SYSTEM ---
+function showLoginScreen() {
     const list = document.getElementById('unit-list');
     list.innerHTML = '';
     UNITS.forEach(u => {
         const div = document.createElement('div');
         div.className = 'unit-item';
         div.innerText = u.name;
-        div.onclick = () => enterApp(u.id);
+        div.onclick = () => login(u.id);
         list.appendChild(div);
     });
 }
 
 function toggleUnitList() {
     const list = document.getElementById('unit-list');
-    list.style.display = (list.style.display === 'block') ? 'none' : 'block';
+    list.style.display = list.style.display === 'block' ? 'none' : 'block';
 }
 
-function enterApp(unitId) {
+function login(unitId) {
     const unit = UNITS.find(u => u.id === unitId);
-    if(!unit) { hardReset(); return; } // Safety check
+    if (!unit) { hardReset(); return; }
 
     currentUnitId = unitId;
     localStorage.setItem('pandu_active_unit', unitId);
 
-    // Load Data Teks
-    const savedData = localStorage.getItem(`pandu_db_${unitId}`);
-    if (savedData) {
-        try { db = JSON.parse(savedData); } catch(e) { db = { anns: [], contacts: [] }; }
-    } else {
-        db = { anns: [], contacts: [] };
-    }
+    // Load Data Text
+    try {
+        const saved = localStorage.getItem(`pandu_db_${unitId}`);
+        if(saved) {
+            let t = JSON.parse(saved);
+            if(t.alarms) { // Migrasi format lama
+                t.anns = t.alarms.map(x=>({id:x.id||Date.now(), unit:x.s, name:x.a, ind:x.m, cause:x.p, act:x.t}));
+                delete t.alarms;
+            }
+            db = t;
+            if(!db.anns) db.anns = [];
+        } else {
+            db = { anns: [], contacts: [] };
+        }
+    } catch(e) { db = { anns: [], contacts: [] }; }
 
-    // Init Database File (IndexedDB)
-    initFileDB();
+    // Load Link
+    driveLink = localStorage.getItem(`pandu_drive_${unitId}`) || MASTER_LINK;
+    document.getElementById('in-gdrive-link').value = driveLink;
+
+    // Init DB File
+    initIndexedDB(unitId);
 
     // Update UI
-    document.getElementById('display-unit-name').innerText = unit.name;
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('main-app').style.display = 'block';
-    document.querySelector('.header').style.display = 'flex';
+    document.getElementById('header-unit-name').innerText = unit.name; // Di Header
+    document.getElementById('dashboard-unit-name').innerText = unit.name; // Di Dashboard
     
-    // Load Drive Link
-    const savedLink = localStorage.getItem(`pandu_drive_${unitId}`);
-    document.getElementById('drive-link-input').value = savedLink || DEFAULT_DRIVE;
-
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app-header').style.display = 'block';
+    document.getElementById('app-container').style.display = 'block';
+    
     goHome();
 }
 
 function logout() {
-    if(confirm('Keluar dari unit ini?')) {
+    if(confirm('Ganti Unit Gardu Induk?')) {
         localStorage.removeItem('pandu_active_unit');
         location.reload();
     }
 }
 
 function hardReset() {
-    if(confirm('Hapus cache dan reset aplikasi?')) {
+    if(confirm('Reset total aplikasi? Data akan hilang.')) {
         localStorage.clear();
         location.reload();
     }
@@ -602,25 +530,143 @@ function hardReset() {
 
 // --- NAVIGATION ---
 function goHome() {
-    document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
-    document.getElementById('dashboard').style.display = 'block';
-    document.querySelector('.header').style.display = 'none'; // Hide header on dashboard for cleaner look
+    document.querySelectorAll('.app-section').forEach(el => el.classList.remove('active'));
+    document.getElementById('main-menu').style.display = 'block';
+    document.getElementById('nav-back-btn').style.display = 'none';
+    window.scrollTo(0,0);
 }
 
 function openSection(id) {
-    document.getElementById('dashboard').style.display = 'none';
-    document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+    document.getElementById('main-menu').style.display = 'none';
     document.getElementById(id).classList.add('active');
-    document.querySelector('.header').style.display = 'flex';
+    document.getElementById('nav-back-btn').style.display = 'block';
     
-    if(id === 'section-ann') renderAnn();
-    if(id === 'section-contact-list') renderContacts();
-    if(id === 'section-sop') renderFiles('sops', 'list-sops');
-    if(id === 'section-asset') renderFiles('assets', 'list-assets');
+    if(id === 'section-annunciator') renderAnnunciator();
+    if(id === 'section-contact') renderContact();
+    if(id === 'section-sop') renderFiles('sops', 'list-sop');
+    if(id === 'section-asset') renderFiles('assets', 'list-asset');
 }
 
-// --- ANNUNCIATOR LOGIC ---
-function saveAnn() {
+// --- DRIVE LINK ---
+function saveGDriveLink() {
+    const val = document.getElementById('in-gdrive-link').value;
+    localStorage.setItem(`pandu_drive_${currentUnitId}`, val);
+    driveLink = val; showToast("Link tersimpan");
+}
+function openGDrive() {
+    if(driveLink) window.open(driveLink, '_blank');
+    else window.open(MASTER_LINK, '_blank');
+}
+
+// --- INDEXED DB (FILE SYSTEM) ---
+function initIndexedDB(uid) {
+    const req = indexedDB.open(`PanduGI_${uid}`, 1);
+    req.onupgradeneeded = e => {
+        const d = e.target.result;
+        if(!d.objectStoreNames.contains('sops')) d.createObjectStore('sops', {keyPath:'id', autoIncrement:true});
+        if(!d.objectStoreNames.contains('assets')) d.createObjectStore('assets', {keyPath:'id', autoIncrement:true});
+    };
+    req.onsuccess = e => { idb = e.target.result; };
+}
+
+function saveFile(store, nameId, fileId) {
+    const name = document.getElementById(nameId).value;
+    const file = document.getElementById(fileId).files[0];
+    if(!name || !file) return alert("Lengkapi Data!");
+    
+    document.getElementById('loader').style.display='flex';
+    const reader = new FileReader();
+    reader.onload = e => {
+        const tx = idb.transaction(store, 'readwrite');
+        tx.objectStore(store).add({
+            name: name,
+            blob: new Blob([e.target.result], {type: 'application/pdf'}),
+            date: new Date().toLocaleDateString()
+        });
+        tx.oncomplete = () => {
+            document.getElementById('loader').style.display='none';
+            showToast("Berhasil Disimpan");
+            document.getElementById(nameId).value = "";
+            document.getElementById(fileId).value = "";
+            renderFiles(store, store==='sops'?'list-sop':'list-asset');
+        };
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+function renderFiles(store, listId) {
+    const list = document.getElementById(listId);
+    list.innerHTML = "<div class='spinner' style='width:20px;height:20px;margin:10px auto'></div>";
+    
+    if(!idb) { setTimeout(() => renderFiles(store, listId), 500); return; }
+    
+    const tx = idb.transaction(store, 'readonly');
+    tx.objectStore(store).getAll().onsuccess = e => {
+        const res = e.target.result.reverse();
+        list.innerHTML = "";
+        if(res.length === 0) list.innerHTML = "<div class='empty-state'>Belum ada file.</div>";
+        
+        res.forEach(f => {
+            list.innerHTML += `
+            <div class="data-card" style="display:flex; justify-content:space-between; align-items:center; padding:12px;">
+                <div style="overflow:hidden;">
+                    <div style="font-weight:700; font-size:14px;">${f.name}</div>
+                    <div style="font-size:11px; color:var(--text-sub);">${f.date}</div>
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn-secondary" style="width:auto; padding:6px 10px;" onclick="openPdf('${store}',${f.id},'${f.name}')">Buka</button>
+                    <button class="btn-danger" style="width:auto; padding:6px 10px;" onclick="delFile('${store}',${f.id})">🗑️</button>
+                </div>
+            </div>`;
+        });
+    };
+}
+
+function openPdf(store, id, title) {
+    document.getElementById('loader').style.display='flex';
+    idb.transaction(store, 'readonly').objectStore(store).get(id).onsuccess = e => {
+        document.getElementById('loader').style.display='none';
+        if(e.target.result) {
+            const url = URL.createObjectURL(e.target.result.blob);
+            document.getElementById('pdf-title').innerText = title;
+            document.getElementById('pdf-frame').src = url;
+            document.getElementById('modal-pdf').style.display = 'flex';
+        } else { alert("File error"); }
+    };
+}
+
+function delFile(store, id) {
+    if(confirm('Hapus?')) {
+        const tx = idb.transaction(store, 'readwrite');
+        tx.objectStore(store).delete(id).oncomplete = () => renderFiles(store, store==='sops'?'list-sop':'list-asset');
+    }
+}
+
+// --- CRUD DATA ---
+function saveDB() { localStorage.setItem(`pandu_db_${currentUnitId}`, JSON.stringify(db)); }
+
+function renderAnnunciator() {
+    const list = document.getElementById('list-ann');
+    const key = document.getElementById('search-ann').value.toLowerCase();
+    list.innerHTML = "";
+    
+    const f = db.anns.filter(x => (x.unit+x.name+x.ind+x.cause+x.act).toLowerCase().includes(key));
+    if(f.length === 0) return list.innerHTML = "<div class='empty-state'>Tidak ditemukan.</div>";
+    
+    f.forEach(i => {
+        list.innerHTML += `
+        <div class="data-card">
+            <button class="delete-btn" onclick="delAnn('${i.id}')">✕</button>
+            <div class="data-badge">${i.unit}</div>
+            <div class="data-title" onclick="editAnn('${i.id}')">${i.name}</div>
+            <div class="lbl">Indikasi</div><div class="val">${i.ind}</div>
+            <div class="lbl">Penyebab</div><div class="val">${i.cause}</div>
+            <div class="lbl">Tindakan</div><div class="val">${i.act}</div>
+        </div>`;
+    });
+}
+
+function saveAnnItem() {
     const id = document.getElementById('ann-id').value || Date.now().toString();
     const item = {
         id: id,
@@ -630,48 +676,16 @@ function saveAnn() {
         cause: document.getElementById('ann-cause').value,
         act: document.getElementById('ann-act').value
     };
-
-    if(!item.name) return alert('Nama Alarm wajib diisi');
-
-    const idx = db.anns.findIndex(x => x.id == id);
-    if(idx > -1) db.anns[idx] = item; else db.anns.unshift(item);
-
-    saveDB();
-    closeModal('modal-ann');
-    renderAnn();
-    showToast('Alarm tersimpan');
-}
-
-function renderAnn() {
-    const list = document.getElementById('list-ann');
-    const key = document.getElementById('search-ann').value.toLowerCase();
-    list.innerHTML = '';
-
-    const filtered = db.anns.filter(x => (x.name + x.ind + x.cause + x.act).toLowerCase().includes(key));
+    if(!item.name) return alert("Isi Nama Alarm");
     
-    if(filtered.length === 0) list.innerHTML = '<div class="empty-state">Data tidak ditemukan</div>';
-
-    filtered.forEach(x => {
-        list.innerHTML += `
-            <div class="clean-card">
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                    <div class="badge">${x.unit}</div>
-                    <div style="display:flex; gap:10px;">
-                        <span onclick="editAnn('${x.id}')" style="cursor:pointer;">✏️</span>
-                        <span onclick="delAnn('${x.id}')" style="cursor:pointer; color:red;">🗑️</span>
-                    </div>
-                </div>
-                <h3 style="margin:0 0 10px 0; color:var(--primary); font-size:16px;">${x.name}</h3>
-                <div class="data-item"><div class="data-label">Indikasi</div><div class="data-value">${x.ind}</div></div>
-                <div class="data-item"><div class="data-label">Penyebab</div><div class="data-value">${x.cause}</div></div>
-                <div class="data-item"><div class="data-label">Tindakan</div><div class="data-value">${x.act}</div></div>
-            </div>
-        `;
-    });
+    const idx = db.anns.findIndex(x=>x.id==id);
+    if(idx > -1) db.anns[idx] = item; else db.anns.unshift(item);
+    
+    saveDB(); closeModal('modal-ann'); renderAnnunciator(); showToast("Tersimpan");
 }
 
 function editAnn(id) {
-    const x = db.anns.find(i => i.id == id);
+    const x = db.anns.find(i=>i.id==id);
     document.getElementById('ann-id').value = x.id;
     document.getElementById('ann-unit').value = x.unit;
     document.getElementById('ann-name').value = x.name;
@@ -684,194 +698,79 @@ function editAnn(id) {
 function delAnn(id) {
     if(confirm('Hapus alarm ini?')) {
         db.anns = db.anns.filter(x => x.id != id);
-        saveDB(); renderAnn();
+        saveDB(); renderAnnunciator();
     }
 }
 
-// --- FILE SYSTEM (INDEXEDDB) ---
-function initFileDB() {
-    const request = indexedDB.open(`PANDU_FILES_${currentUnitId}`, 1);
-    request.onupgradeneeded = e => {
-        const d = e.target.result;
-        if(!d.objectStoreNames.contains('sops')) d.createObjectStore('sops', {keyPath: 'id', autoIncrement: true});
-        if(!d.objectStoreNames.contains('assets')) d.createObjectStore('assets', {keyPath: 'id', autoIncrement: true});
-    };
-    request.onsuccess = e => { idb = e.target.result; };
+function renderContact() {
+    const list = document.getElementById('list-contact'); list.innerHTML = "";
+    db.contacts.forEach(c => {
+        list.innerHTML += `
+        <div class="data-card" style="display:flex; justify-content:space-between; align-items:center;">
+            <div><div class="data-title" style="margin:0">${c.name}</div><div style="color:var(--primary); font-weight:600;">${c.num}</div></div>
+            <button class="delete-btn" style="position:static;" onclick="delCont('${c.id}')">✕</button>
+        </div>`;
+    });
 }
 
-function saveFile(storeName, nameId, fileId) {
-    const name = document.getElementById(nameId).value;
-    const file = document.getElementById(fileId).files[0];
-    
-    if(!name || !file) return alert("Lengkapi judul dan pilih file PDF");
-    if(file.type !== "application/pdf") return alert("Wajib file PDF");
-
-    showLoader(true);
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const tx = idb.transaction(storeName, "readwrite");
-        tx.objectStore(storeName).add({
-            name: name,
-            blob: new Blob([e.target.result], {type: 'application/pdf'}),
-            date: new Date().toLocaleDateString()
-        });
-        tx.oncomplete = () => {
-            showLoader(false);
-            showToast("File Tersimpan Offline");
-            document.getElementById(nameId).value = "";
-            document.getElementById(fileId).value = "";
-            renderFiles(storeName, storeName === 'sops' ? 'list-sops' : 'list-assets');
-        };
-        tx.onerror = () => { showLoader(false); alert("Gagal simpan. Memori penuh?"); };
-    };
-    reader.readAsArrayBuffer(file);
+function saveContactItem() {
+    const item = { id: Date.now().toString(), name: document.getElementById('contact-name').value, num: document.getElementById('contact-num').value };
+    if(!item.name) return;
+    db.contacts.push(item); saveDB(); closeModal('modal-contact'); renderContact();
 }
 
-function renderFiles(storeName, listId) {
-    const list = document.getElementById(listId);
-    list.innerHTML = '<div class="spinner" style="width:20px;height:20px;margin:10px auto;"></div>';
-    
-    if(!idb) { setTimeout(() => renderFiles(storeName, listId), 500); return; }
-
-    const tx = idb.transaction(storeName, "readonly");
-    tx.objectStore(storeName).getAll().onsuccess = e => {
-        const files = e.target.result.reverse();
-        list.innerHTML = '';
-        if(files.length === 0) {
-            list.innerHTML = '<div class="empty-state">Belum ada file tersimpan.</div>';
-            return;
-        }
-        files.forEach(f => {
-            list.innerHTML += `
-                <div class="clean-card" style="padding:15px; display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-                    <div style="overflow:hidden;">
-                        <div style="font-weight:700; font-size:14px;">${f.name}</div>
-                        <div style="font-size:11px; color:var(--text-grey);">${f.date}</div>
-                    </div>
-                    <div style="display:flex; gap:8px;">
-                        <button class="btn-secondary" style="width:auto; padding:8px 12px;" onclick="viewPdf('${storeName}', ${f.id}, '${f.name}')">Buka</button>
-                        <button class="btn-danger" style="width:auto; padding:8px 12px;" onclick="delFile('${storeName}', ${f.id})">🗑️</button>
-                    </div>
-                </div>
-            `;
-        });
-    };
+function delCont(id) {
+    if(confirm('Hapus kontak?')) { db.contacts = db.contacts.filter(c => c.id != id); saveDB(); renderContact(); }
 }
 
-function viewPdf(storeName, id, title) {
-    showLoader(true);
-    const tx = idb.transaction(storeName, "readonly");
-    tx.objectStore(storeName).get(id).onsuccess = e => {
-        showLoader(false);
-        const file = e.target.result;
-        if(file) {
-            const url = URL.createObjectURL(file.blob);
-            document.getElementById('pdf-title').innerText = title;
-            document.getElementById('pdf-frame').src = url;
-            openModal('modal-pdf');
-        } else {
-            alert("File rusak / tidak ditemukan");
-        }
-    };
-}
+// WRAPPERS
+function saveSOP() { saveFile('sops', 'sop-name', 'sop-file'); }
+function saveAsset() { saveFile('assets', 'asset-name', 'asset-file'); }
 
-function delFile(storeName, id) {
-    if(confirm("Hapus file ini permanen?")) {
-        const tx = idb.transaction(storeName, "readwrite");
-        tx.objectStore(storeName).delete(id).oncomplete = () => {
-            renderFiles(storeName, storeName === 'sops' ? 'list-sops' : 'list-assets');
-        };
-    }
-}
-
-// --- UTILS ---
-function saveDB() {
-    localStorage.setItem(`pandu_db_${currentUnitId}`, JSON.stringify(db));
-}
-
-function saveDriveLink() {
-    const link = document.getElementById('drive-link-input').value;
-    localStorage.setItem(`pandu_drive_${currentUnitId}`, link);
-    showToast("Link Drive Disimpan");
-}
-
-function openDrive() {
-    const link = document.getElementById('drive-link-input').value;
-    if(link) window.open(link, '_blank');
-    else alert("Link belum diatur");
-}
-
-// Export/Import
 function exportData() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
+    const s = JSON.stringify(db);
+    const b = new Blob([s], {type:"application/json"});
+    const url = URL.createObjectURL(b);
     const a = document.createElement('a');
-    a.href = dataStr;
+    a.href = url;
     a.download = `BACKUP_${currentUnitId}.json`;
-    a.click();
+    document.body.appendChild(a); a.click(); a.remove();
 }
 
 function importData() {
-    const file = document.getElementById('import-file').files[0];
-    if(!file) return;
-    
-    const reader = new FileReader();
-    reader.onload = e => {
+    const f = document.getElementById('import-file').files[0];
+    if(!f) return;
+    const r = new FileReader();
+    r.onload = e => {
         try {
-            const json = JSON.parse(e.target.result);
-            if(confirm("Data lama akan ditimpa. Lanjutkan?")) {
-                db = json;
-                saveDB();
-                alert("Berhasil restore data!");
-                location.reload();
+            const j = JSON.parse(e.target.result);
+            if(confirm('Timpa data saat ini?')) {
+                // Compatibility check
+                if(j.alarms) { j.anns = j.alarms.map(x=>({id:x.id, unit:x.s, name:x.a, ind:x.m, cause:x.p, act:x.t})); delete j.alarms; }
+                db = j; saveDB(); alert('Berhasil Restore!'); location.reload();
             }
-        } catch(x) { alert("File JSON rusak"); }
+        } catch(err) { alert('File rusak'); }
     };
-    reader.readAsText(file);
+    r.readAsText(f);
 }
 
-function resetUnitData() {
-    if(confirm("Yakin hapus semua data Teks & File untuk unit ini?")) {
+function resetApp() {
+    if(confirm('Hapus SEMUA data unit ini?')) {
         localStorage.removeItem(`pandu_db_${currentUnitId}`);
-        indexedDB.deleteDatabase(`PANDU_FILES_${currentUnitId}`);
-        alert("Data terhapus.");
+        localStorage.removeItem(`pandu_drive_${currentUnitId}`);
+        indexedDB.deleteDatabase(`PanduGI_${currentUnitId}`);
         location.reload();
     }
 }
 
-// CONTACT
-function saveCont() {
-    const item = {
-        id: Date.now(),
-        name: document.getElementById('cont-name').value,
-        num: document.getElementById('cont-num').value
-    };
-    if(!item.name) return;
-    db.contacts.push(item);
-    saveDB(); closeModal('modal-contact'); renderContacts();
+// UI HELPER
+function openModal(id) { 
+    document.getElementById(id).style.display='flex';
+    if(id==='modal-ann') ['ann-id','ann-unit','ann-name','ann-ind','ann-cause','ann-act'].forEach(k=>document.getElementById(k).value='');
+    if(id==='modal-contact') ['contact-id','contact-name','contact-num'].forEach(k=>document.getElementById(k).value='');
 }
-function renderContacts() {
-    const l = document.getElementById('list-contact'); l.innerHTML='';
-    db.contacts.forEach(c => {
-        l.innerHTML += `<div class="clean-card" style="padding:15px; display:flex; justify-content:space-between; align-items:center;"><div><b>${c.name}</b><br><span style="color:var(--primary)">${c.num}</span></div><button style="border:none; background:none; color:red;" onclick="delCont(${c.id})">✕</button></div>`;
-    });
-}
-function delCont(id) { if(confirm('Hapus?')) { db.contacts = db.contacts.filter(c=>c.id!=id); saveDB(); renderContacts(); } }
-
-// UI Helpers
-function openModal(id) {
-    document.getElementById(id).style.display = 'flex';
-    // Clear inputs if needed
-    if(id === 'modal-ann') {
-        ['ann-id','ann-unit','ann-name','ann-ind','ann-cause','ann-act'].forEach(k => document.getElementById(k).value='');
-    }
-}
-function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-function showLoader(show) { document.getElementById('loader').style.display = show ? 'flex' : 'none'; }
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.innerText = msg; t.style.display = 'block';
-    setTimeout(() => { t.style.display = 'none'; }, 3000);
-}
+function closeModal(id) { document.getElementById(id).style.display='none'; }
+function showToast(msg) { const t=document.getElementById('toast'); t.innerText=msg; t.style.display='block'; setTimeout(()=>t.style.display='none',3000); }
 
 </script>
 </body>
